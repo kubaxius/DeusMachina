@@ -1,0 +1,108 @@
+[gd_scene load_steps=8 format=3 uid="uid://bg4kclwa1ktsc"]
+
+[ext_resource type="Script" path="res://planet_generator/planet_generator.gd" id="1_qspai"]
+[ext_resource type="Script" path="res://planet_generator/DrawViewport.gd" id="3_ii7q4"]
+[ext_resource type="Texture2D" uid="uid://cgs5f81h45aun" path="res://planet_generator/brush.png" id="4_0xg3u"]
+[ext_resource type="Texture2D" uid="uid://chij0ohx82iq" path="res://planet_generator/ColorGrid.png" id="6_ngrbg"]
+[ext_resource type="Script" path="res://planet_generator/base_height_map.gd" id="7_1s0s0"]
+
+[sub_resource type="GDScript" id="GDScript_h7gmm"]
+script/source = "### CameraRoot ###
+extends Marker3D
+
+
+@export_range(0.1, 1, 0.1) var camera_speed = 0.2 
+
+@onready var h_gimball := $HorizontalGimball
+@onready var v_gimball := $HorizontalGimball/VerticalGimball
+@onready var camera := $HorizontalGimball/VerticalGimball/Camera
+
+
+func _process(delta):
+	_rotate_with_mouse(delta)
+
+
+var rotating := false
+var prev_mouse_position: Vector2
+var current_mouse_position: Vector2
+func _rotate_with_mouse(delta):
+	if Input.is_action_just_pressed(\"secondary_click\"):
+		rotating = true
+		prev_mouse_position = get_viewport().get_mouse_position()
+	elif Input.is_action_just_released(\"secondary_click\"):
+		rotating = false
+	
+	if rotating:
+		current_mouse_position = get_viewport().get_mouse_position()
+		var new_rotation = Vector2()
+		new_rotation.x = (prev_mouse_position.x - current_mouse_position.x) 
+		new_rotation.y = (prev_mouse_position.y - current_mouse_position.y)
+		new_rotation *= delta * camera_speed
+		rotate_camera(new_rotation)
+		prev_mouse_position = current_mouse_position
+
+
+func rotate_camera(new_rotation: Vector2):
+	h_gimball.rotate_y(new_rotation.x)
+	v_gimball.rotate_x(new_rotation.y)
+	v_gimball.rotation.x = clamp(v_gimball.rotation.x, -PI/2, PI/2)
+"
+
+[sub_resource type="GDScript" id="GDScript_ep5h4"]
+script/source = "### UnwrappedGlobe ###
+extends Sprite2D
+
+
+@onready var viewport = get_tree().current_scene.find_child(\"DrawViewport\")
+
+
+func _physics_process(_delta):
+	set_texture_from_draw_viewport()
+
+
+func set_texture_from_draw_viewport():
+	await RenderingServer.frame_post_draw
+	var tex = viewport.get_texture()
+	texture = tex
+"
+
+[node name="PlanetGenerator" type="Node3D"]
+script = ExtResource("1_qspai")
+
+[node name="CameraRoot" type="Marker3D" parent="."]
+script = SubResource("GDScript_h7gmm")
+
+[node name="HorizontalGimball" type="Node3D" parent="CameraRoot"]
+
+[node name="VerticalGimball" type="Node3D" parent="CameraRoot/HorizontalGimball"]
+
+[node name="Camera" type="Camera3D" parent="CameraRoot/HorizontalGimball/VerticalGimball"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 60)
+current = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CameraRoot/HorizontalGimball/VerticalGimball/Camera"]
+
+[node name="UnwrappedGlobe" type="Sprite2D" parent="CameraRoot/HorizontalGimball/VerticalGimball/Camera/CanvasLayer"]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(207, 542)
+scale = Vector2(0.0995539, 0.0995539)
+script = SubResource("GDScript_ep5h4")
+
+[node name="DrawViewport" type="SubViewport" parent="."]
+disable_3d = true
+render_target_clear_mode = 1
+render_target_update_mode = 0
+script = ExtResource("3_ii7q4")
+
+[node name="Brush" type="Sprite2D" parent="DrawViewport"]
+z_index = 1
+scale = Vector2(2, 2)
+texture = ExtResource("4_0xg3u")
+
+[node name="Noise" type="Sprite2D" parent="DrawViewport"]
+show_behind_parent = true
+texture = ExtResource("6_ngrbg")
+centered = false
+region_rect = Rect2(0.53, 0, 490.05, 319.42)
+script = ExtResource("7_1s0s0")
