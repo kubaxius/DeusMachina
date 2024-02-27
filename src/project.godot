@@ -18,11 +18,11 @@ config/icon="res://icon.svg"
 [autoload]
 
 UvPosition="*res://utils/uv_position.gd"
-Utils="*res://utils/utils.gd"
+Utils="res://utils/utils.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/FileSystemView/plugin.cfg", "res://addons/bottom_panel_shortcuts/plugin.cfg", "res://addons/gdDelaunay/plugin.cfg")
+enabled=PackedStringArray("res://addons/bottom_panel_shortcuts/plugin.cfg", "res://addons/draw3d/plugin.cfg", "res://addons/gdDelaunay/plugin.cfg")
 
 [file_customization]
 

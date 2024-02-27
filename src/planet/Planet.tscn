@@ -1,0 +1,34 @@
+[gd_scene load_steps=9 format=3 uid="uid://dg7ra70u1lhvq"]
+
+[ext_resource type="PackedScene" uid="uid://dw6eugjrkh824" path="res://planet/Globe.blend" id="1_r78s8"]
+[ext_resource type="Shader" uid="uid://dpfkaigfla5" path="res://planet/test_shader.tres" id="2_rbp4x"]
+[ext_resource type="Script" path="res://planet/planet.gd" id="2_sx4e4"]
+[ext_resource type="Script" path="res://planet/triangle_mesh.gd" id="4_hpe3i"]
+[ext_resource type="Script" path="res://addons/draw3d/draw_3d.gd" id="5_kio6r"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kpxbf"]
+render_priority = 0
+shader = ExtResource("2_rbp4x")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_llal2"]
+radius = 1.0
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_mtj7t"]
+
+[node name="Planet" instance=ExtResource("1_r78s8")]
+script = ExtResource("2_sx4e4")
+
+[node name="Globe" parent="." index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_kpxbf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Globe" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Globe/StaticBody3D" index="0"]
+shape = SubResource("SphereShape3D_llal2")
+
+[node name="TriangleMesh" type="Node3D" parent="." index="1"]
+script = ExtResource("4_hpe3i")
+
+[node name="Draw3D" type="MeshInstance3D" parent="TriangleMesh" index="0"]
+mesh = SubResource("ImmediateMesh_mtj7t")
+script = ExtResource("5_kio6r")

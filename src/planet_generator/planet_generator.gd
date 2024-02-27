@@ -1,14 +1,13 @@
 ### Planet Generator ###
 extends Node3D
 
-const Delaunay = preload("res://addons/gdDelaunay/Delaunay.gd")
 const GlobeTools = preload("res://utils/globe_tools.gd")
 
 @export var gen_seed = 2137
 @export var map_size = Vector2i(4096, 2048)
 
 @onready var rng := RandomNumberGenerator.new()
-@onready var globe_mesh := $Globe/Globe
+@onready var globe_mesh := $Planet/Globe
 @onready var material:ShaderMaterial = globe_mesh.get_surface_override_material(0)
 @onready var camera := find_child("Camera")
 @onready var draw_viewport := $DrawViewport
@@ -29,34 +28,22 @@ func _ready():
 	for point in stereo_points:
 		delaunay.add_point(point)
 	
-	var triangles = delaunay.triangulate()
-	for triangle:Delaunay.Triangle in triangles:
-		draw_line(GlobeTools.stereo_to_vector3(triangle.edge_ab.a), GlobeTools.stereo_to_vector3(triangle.edge_ab.b))
-		draw_line(GlobeTools.stereo_to_vector3(triangle.edge_ca.a), GlobeTools.stereo_to_vector3(triangle.edge_ca.b))
-		draw_line(GlobeTools.stereo_to_vector3(triangle.edge_bc.a), GlobeTools.stereo_to_vector3(triangle.edge_bc.b))
+	#var triangles = delaunay.triangulate()
+	#for triangle:Delaunay.Triangle in triangles:
+		#draw_line(GlobeTools.stereo_to_vector3(triangle.edge_ab.a), GlobeTools.stereo_to_vector3(triangle.edge_ab.b))
+		#draw_line(GlobeTools.stereo_to_vector3(triangle.edge_ca.a), GlobeTools.stereo_to_vector3(triangle.edge_ca.b))
+		#draw_line(GlobeTools.stereo_to_vector3(triangle.edge_bc.a), GlobeTools.stereo_to_vector3(triangle.edge_bc.b))
 
 
 func _physics_process(_delta):
+	$Planet/TriangleMesh.highlight_triangle(camera)
 	_draw_with_mouse()
 	material.set_shader_parameter("SplatMapTexture", draw_viewport.get_texture())
 
 
-func _load_uv_3d_map():
-	var text = FileAccess.open("res://planet/uv_to_3d.arr", FileAccess.READ).get_as_text()
-
-	var uv_3d = str_to_var(text)
-	return uv_3d
-
-
 func _draw_with_mouse():
-	var space_state = get_world_3d().direct_space_state
-	var mouse_position = get_viewport().get_mouse_position()
-	
-	var ray_origin = camera.project_ray_origin(mouse_position)
-	var ray_end = ray_origin + camera.project_ray_normal(mouse_position) * 2000
-	
-	var intersection = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(ray_origin, ray_end))
-	
+	var intersection = Utils.project_camera_ray(camera, get_world_3d(), get_viewport())
+
 	if not intersection.is_empty():
 		if Input.is_action_pressed("break_block"):
 			var uv = UvPosition.get_uv_coords(intersection.position, intersection.normal)
@@ -71,7 +58,7 @@ func get_random_vector():
 func vector_to_intersection(vector: Vector3):
 	var space_state := get_world_3d().direct_space_state
 	
-	var starting_point = vector.normalized() * 26
+	var starting_point = vector.normalized() * 1.2
 	var query = PhysicsRayQueryParameters3D.create(starting_point, globe_mesh.global_position)
 	var intersection = space_state.intersect_ray(query)
 	
@@ -89,11 +76,11 @@ func generate_random_lines(number = 2):
 
 
 func generate_noise_texture():
-	var uv_3d = _load_uv_3d_map()
+	var uv_3d = $Planet.uv_to_3d
 	var noise := FastNoiseLite.new()
 	noise.seed = gen_seed
 	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
-	noise.frequency = 0.1
+	noise.frequency = 0.5
 	noise.fractal_octaves = 1
 	
 	var image := Image.create(1024, 512, false, Image.FORMAT_RGB8)
@@ -106,6 +93,7 @@ func generate_noise_texture():
 				image.set_pixel(x, y, color)
 	
 	image.resize(map_size.x, map_size.y)
+	#image.bump_map_to_normal_map(10)
 	
 	$DrawViewport/Noise.texture = ImageTexture.create_from_image(image)
 

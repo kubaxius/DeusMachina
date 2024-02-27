@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://bg4kclwa1ktsc"]
+[gd_scene load_steps=9 format=3 uid="uid://bg4kclwa1ktsc"]
 
 [ext_resource type="Script" path="res://planet_generator/planet_generator.gd" id="1_qspai"]
+[ext_resource type="PackedScene" uid="uid://dg7ra70u1lhvq" path="res://planet/Planet.tscn" id="2_31npl"]
 [ext_resource type="Script" path="res://planet_generator/DrawViewport.gd" id="3_ii7q4"]
 [ext_resource type="Texture2D" uid="uid://cgs5f81h45aun" path="res://planet_generator/brush.png" id="4_0xg3u"]
 [ext_resource type="Texture2D" uid="uid://chij0ohx82iq" path="res://planet_generator/ColorGrid.png" id="6_ngrbg"]
@@ -42,10 +43,21 @@ func _rotate_with_mouse(delta):
 		prev_mouse_position = current_mouse_position
 
 
+func _unhandled_input(event):
+	if event.is_action_pressed(\"move_forward\"):
+		zoom(0.1)
+	elif event.is_action_pressed(\"move_backward\"):
+		zoom(-0.1)
+
+
 func rotate_camera(new_rotation: Vector2):
 	h_gimball.rotate_y(new_rotation.x)
 	v_gimball.rotate_x(new_rotation.y)
 	v_gimball.rotation.x = clamp(v_gimball.rotation.x, -PI/2, PI/2)
+
+
+func zoom(val):
+	camera.position.z -= camera.position.z * val
 "
 
 [sub_resource type="GDScript" id="GDScript_ep5h4"]
@@ -69,6 +81,8 @@ func set_texture_from_draw_viewport():
 [node name="PlanetGenerator" type="Node3D"]
 script = ExtResource("1_qspai")
 
+[node name="Planet" parent="." instance=ExtResource("2_31npl")]
+
 [node name="CameraRoot" type="Marker3D" parent="."]
 script = SubResource("GDScript_h7gmm")
 
@@ -77,8 +91,9 @@ script = SubResource("GDScript_h7gmm")
 [node name="VerticalGimball" type="Node3D" parent="CameraRoot/HorizontalGimball"]
 
 [node name="Camera" type="Camera3D" parent="CameraRoot/HorizontalGimball/VerticalGimball"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 60)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 current = true
+near = 0.005
 
 [node name="CanvasLayer" type="CanvasLayer" parent="CameraRoot/HorizontalGimball/VerticalGimball/Camera"]
 
@@ -106,3 +121,5 @@ texture = ExtResource("6_ngrbg")
 centered = false
 region_rect = Rect2(0.53, 0, 490.05, 319.42)
 script = ExtResource("7_1s0s0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]

@@ -10,4 +10,4 @@ func draw_dot(loc: Vector2i, col := Color.WHITE):
 
 func _draw():
 	for point in points:
-		draw_circle(point[0], 10, point[1])
+		draw_circle(point[0], 1, point[1])

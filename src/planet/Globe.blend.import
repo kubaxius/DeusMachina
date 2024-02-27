@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dw6eugjrkh824"
-path="res://.godot/imported/Globe.blend-b0314044c2d2bb74a370242ac4f62f49.scn"
+path="res://.godot/imported/Globe.blend-cf29cd680509bf315b374ec13bac08b2.scn"
 
 [deps]
 
-source_file="res://planet_generator/Globe.blend"
-dest_files=["res://.godot/imported/Globe.blend-b0314044c2d2bb74a370242ac4f62f49.scn"]
+source_file="res://planet/Globe.blend"
+dest_files=["res://.godot/imported/Globe.blend-cf29cd680509bf315b374ec13bac08b2.scn"]
 
 [params]
 

@@ -1,0 +1,46 @@
+[gd_resource type="VisualShader" load_steps=4 format=3 uid="uid://dpfkaigfla5"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_w0lo1"]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_a1cs8"]
+source = 5
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_e8isy"]
+parameter_name = "SplatMapTexture"
+texture_type = 1
+color_default = 1
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D SplatMapTexture : source_color, hint_default_black;
+
+
+
+void fragment() {
+// Input:2
+	vec2 n_out2p0 = UV;
+
+
+	vec4 n_out4p0;
+// Texture2D:4
+	n_out4p0 = texture(SplatMapTexture, n_out2p0);
+
+
+// Output:0
+	ALBEDO = vec3(n_out4p0.xyz);
+
+
+}
+"
+graph_offset = Vector2(78.1302, 122.038)
+nodes/fragment/0/position = Vector2(1500, 240)
+nodes/fragment/2/node = SubResource("VisualShaderNodeInput_w0lo1")
+nodes/fragment/2/position = Vector2(380, 420)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_a1cs8")
+nodes/fragment/4/position = Vector2(800, 460)
+nodes/fragment/6/node = SubResource("VisualShaderNodeTexture2DParameter_e8isy")
+nodes/fragment/6/position = Vector2(400, 580)
+nodes/fragment/connections = PackedInt32Array(6, 0, 4, 2, 2, 0, 4, 0, 4, 0, 0, 0)
