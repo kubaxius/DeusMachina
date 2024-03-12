@@ -6,7 +6,7 @@ static func get_percent(current, max, step = 1):
 	return snapped((float(current)/float(max)) * 100, step)
 
 
-# get_world3d() and get_viewport()
+# get_world_3d() and get_viewport()
 static func project_camera_ray(camera: Camera3D, world:World3D, viewport:Viewport, length = 2000) -> Dictionary:
 	var space_state = world.direct_space_state
 	var mouse_position = viewport.get_mouse_position()

@@ -1,11 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://bg4kclwa1ktsc"]
+[gd_scene load_steps=10 format=3 uid="uid://bg4kclwa1ktsc"]
 
-[ext_resource type="Script" path="res://planet_generator/planet_generator.gd" id="1_qspai"]
+[ext_resource type="Script" path="res://planet_generator/PlanetGenerator.gd" id="1_qspai"]
 [ext_resource type="PackedScene" uid="uid://dg7ra70u1lhvq" path="res://planet/Planet.tscn" id="2_31npl"]
 [ext_resource type="Script" path="res://planet_generator/DrawViewport.gd" id="3_ii7q4"]
 [ext_resource type="Texture2D" uid="uid://cgs5f81h45aun" path="res://planet_generator/brush.png" id="4_0xg3u"]
 [ext_resource type="Texture2D" uid="uid://chij0ohx82iq" path="res://planet_generator/ColorGrid.png" id="6_ngrbg"]
 [ext_resource type="Script" path="res://planet_generator/base_height_map.gd" id="7_1s0s0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_os82g"]
 
 [sub_resource type="GDScript" id="GDScript_h7gmm"]
 script/source = "### CameraRoot ###
@@ -81,6 +83,13 @@ func set_texture_from_draw_viewport():
 [node name="PlanetGenerator" type="Node3D"]
 script = ExtResource("1_qspai")
 
+[node name="Test" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.09729, 0.81065, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Test"]
+shape = SubResource("BoxShape3D_os82g")
+metadata/_edit_lock_ = true
+
 [node name="Planet" parent="." instance=ExtResource("2_31npl")]
 
 [node name="CameraRoot" type="Marker3D" parent="."]
@@ -106,8 +115,6 @@ script = SubResource("GDScript_ep5h4")
 
 [node name="DrawViewport" type="SubViewport" parent="."]
 disable_3d = true
-render_target_clear_mode = 1
-render_target_update_mode = 0
 script = ExtResource("3_ii7q4")
 
 [node name="Brush" type="Sprite2D" parent="DrawViewport"]

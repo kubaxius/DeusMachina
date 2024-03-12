@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://6wjn33dh1mx6"]
 
-[ext_resource type="PackedScene" uid="uid://c7js51effs31g" path="res://voxel_terrain.tscn" id="1_2fc2f"]
+[ext_resource type="PackedScene" uid="uid://c7js51effs31g" path="res://VoxelTerrain.tscn" id="1_2fc2f"]
 [ext_resource type="Script" path="res://player/addons/ultimate_character/ucharacterbody3d.gd" id="2_ln8d0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_k4fyj"]

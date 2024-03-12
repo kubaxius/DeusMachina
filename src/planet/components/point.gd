@@ -11,7 +11,7 @@ var position_3d: Vector3:
 		position = pos
 
 var position_stereo: Vector2:
-	get: 
+	get:
 		return GlobeTools.vector3_to_stereo(position)
 	set(pos):
 		position = GlobeTools.stereo_to_vector3(pos)
