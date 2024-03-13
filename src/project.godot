@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Deus Machina"
-run/main_scene="res://planet_generator/PlanetGenerator.tscn"
+run/main_scene="res://planet_generator_old/PlanetGenerator.tscn"
 config/features=PackedStringArray("4.2", "Double Precision", "Forward Plus")
 config/icon="res://icon.svg"
 

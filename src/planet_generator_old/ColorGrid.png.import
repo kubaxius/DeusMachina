@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://chij0ohx82iq"
-path.s3tc="res://.godot/imported/ColorGrid.png-6a1abab3636fba74a97f33ce46b52191.s3tc.ctex"
+path.s3tc="res://.godot/imported/ColorGrid.png-a21f74bf41eb61523aeaaea66169dbe4.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://planet_generator/ColorGrid.png"
-dest_files=["res://.godot/imported/ColorGrid.png-6a1abab3636fba74a97f33ce46b52191.s3tc.ctex"]
+source_file="res://planet_generator_old/ColorGrid.png"
+dest_files=["res://.godot/imported/ColorGrid.png-a21f74bf41eb61523aeaaea66169dbe4.s3tc.ctex"]
 
 [params]
 

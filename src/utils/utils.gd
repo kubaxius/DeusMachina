@@ -16,3 +16,7 @@ static func project_camera_ray(camera: Camera3D, world:World3D, viewport:Viewpor
 	
 	var intersection = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(ray_origin, ray_end))
 	return intersection
+
+
+static func get_random_vector(rng):
+	return Vector3(rng.randfn(), rng.randfn(), rng.randfn()).normalized()

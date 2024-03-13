@@ -11,7 +11,7 @@ const GlobeTools = preload("res://utils/globe_tools.gd")
 @onready var material:ShaderMaterial = globe_mesh.get_surface_override_material(0)
 @onready var camera := find_child("Camera")
 @onready var draw_viewport := $DrawViewport
-@onready var current_map := $DrawViewport/Noise
+@onready var current_map := $DrawViewport/HeightMap
 
 
 func _ready():
@@ -19,15 +19,15 @@ func _ready():
 	$DrawViewport.size = map_size
 	rng.seed = gen_seed
 	
-	generate_noise_texture()
-	#impress_shape()
+	current_map.texture = generate_noise_texture($PixelCollider.uv1k, map_size)
+	impress_shape_on_sprite(current_map, $Test)
 	
-	var delaunay = Delaunay.new()
-	var points = get_random_points_on_a_sphere(10)
-	
-	var stereo_points = GlobeTools.array_vector3_to_stereo(points)
-	for point in stereo_points:
-		delaunay.add_point(point)
+	#var delaunay = Delaunay.new()
+	#var points = get_random_points_on_a_sphere(10)
+	#
+	#var stereo_points = GlobeTools.array_vector3_to_stereo(points)
+	#for point in stereo_points:
+		#delaunay.add_point(point)
 	
 	#var triangles = delaunay.triangulate()
 	#for triangle:Delaunay.Triangle in triangles:
@@ -37,25 +37,7 @@ func _ready():
 
 
 func _physics_process(_delta):
-	_draw_with_mouse()
 	material.set_shader_parameter("SplatMapTexture", draw_viewport.get_texture())
-	if Input.is_action_pressed("action_jump"):
-		impress_shape()
-
-
-func _draw_with_mouse():
-	var intersection = Utils.project_camera_ray(camera, get_world_3d(), get_viewport())
-
-	if not intersection.is_empty():
-		if Input.is_action_pressed("break_block"):
-			$Test.position = intersection.position
-			var uv = UvPosition.get_uv_coords(intersection.position, intersection.normal)
-			if uv:
-				draw_viewport.move_brush(uv * Vector2(map_size))
-
-
-func get_random_vector():
-	return Vector3(rng.randfn(), rng.randfn(), rng.randfn()).normalized()
 
 
 func vector_to_intersection(vector: Vector3):
@@ -68,18 +50,7 @@ func vector_to_intersection(vector: Vector3):
 	return intersection
 
 
-func generate_random_lines(number = 2):
-	for i in number:
-		var from = get_random_vector()
-		var to = get_random_vector()
-		
-		draw_line(from, to, 50)
-		draw_dot(vector_to_intersection(from), Color.GREEN_YELLOW)
-		draw_dot(vector_to_intersection(to), Color.BLUE)
-
-
-func generate_noise_texture():
-	var uv_3d: Uv3DMap = $Planet/PixelCollider.uv1k
+func generate_noise_texture(uv_3d: Uv3DMap, size: Vector2i):
 	var noise := FastNoiseLite.new()
 	noise.seed = gen_seed
 	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
@@ -95,22 +66,22 @@ func generate_noise_texture():
 				var color = Color(noise_val, noise_val, noise_val)
 				image.set_pixel(x, y, color)
 	
-	image.resize(map_size.x, map_size.y)
+	image.resize(size.x, size.y)
 	#image.bump_map_to_normal_map(10)
 	
-	$DrawViewport/Noise.texture = ImageTexture.create_from_image(image)
+	return ImageTexture.create_from_image(image)
 
 
-func impress_shape():
+func impress_shape_on_sprite(sprite: Sprite2D, shape: Area3D):
 	
-	var image = $DrawViewport/Noise.texture.get_image()
+	var image = sprite.texture.get_image()
 	image.resize(1024, 512)
 	
-	for pixel in $Planet/PixelCollider.get_pixels_inside_area($Test, $Planet/PixelCollider.UV1K):
+	for pixel in $PixelCollider.get_pixels_inside_area(shape, $PixelCollider.UV1K):
 		image.set_pixel(pixel.x, pixel.y, Color.WHITE)
 	
 	image.resize(map_size.x, map_size.y)
-	$DrawViewport/Noise.texture = ImageTexture.create_from_image(image)
+	sprite.texture = ImageTexture.create_from_image(image)
 
 
 func draw_dot(where, col = Color.WHITE):
@@ -140,13 +111,4 @@ func draw_line(from:Vector3, to:Vector3, density := 50):
 		var step = step_size * i * angle
 		var vector = from.rotated(from.cross(to).normalized(), step)
 		draw_dot(vector)
-
-
-func get_random_points_on_a_sphere(number):
-	var return_array = []
-	
-	for i in number:
-		return_array.append(get_random_vector())
-	
-	return return_array
 

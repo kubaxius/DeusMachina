@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://bg4kclwa1ktsc"]
+[gd_scene load_steps=9 format=3 uid="uid://bg4kclwa1ktsc"]
 
-[ext_resource type="Script" path="res://planet_generator/PlanetGenerator.gd" id="1_qspai"]
+[ext_resource type="Script" path="res://planet_generator_old/PlanetGenerator.gd" id="1_qspai"]
+[ext_resource type="PackedScene" uid="uid://ojop0b2r112o" path="res://planet_generator_old/components/PixelCollider.tscn" id="2_3bf05"]
 [ext_resource type="PackedScene" uid="uid://dg7ra70u1lhvq" path="res://planet/Planet.tscn" id="2_31npl"]
-[ext_resource type="Script" path="res://planet_generator/DrawViewport.gd" id="3_ii7q4"]
-[ext_resource type="Texture2D" uid="uid://cgs5f81h45aun" path="res://planet_generator/brush.png" id="4_0xg3u"]
-[ext_resource type="Texture2D" uid="uid://chij0ohx82iq" path="res://planet_generator/ColorGrid.png" id="6_ngrbg"]
-[ext_resource type="Script" path="res://planet_generator/base_height_map.gd" id="7_1s0s0"]
+[ext_resource type="Texture2D" uid="uid://chij0ohx82iq" path="res://planet_generator_old/ColorGrid.png" id="6_ngrbg"]
+[ext_resource type="Script" path="res://planet_generator_old/base_height_map.gd" id="7_1s0s0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_os82g"]
 
@@ -83,8 +82,10 @@ func set_texture_from_draw_viewport():
 [node name="PlanetGenerator" type="Node3D"]
 script = ExtResource("1_qspai")
 
+[node name="PixelCollider" parent="." instance=ExtResource("2_3bf05")]
+
 [node name="Test" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.09729, 0.81065, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.09729, 0.81065, 0.177731)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Test"]
 shape = SubResource("BoxShape3D_os82g")
@@ -100,7 +101,7 @@ script = SubResource("GDScript_h7gmm")
 [node name="VerticalGimball" type="Node3D" parent="CameraRoot/HorizontalGimball"]
 
 [node name="Camera" type="Camera3D" parent="CameraRoot/HorizontalGimball/VerticalGimball"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00400453, 0, 3)
 current = true
 near = 0.005
 
@@ -115,15 +116,8 @@ script = SubResource("GDScript_ep5h4")
 
 [node name="DrawViewport" type="SubViewport" parent="."]
 disable_3d = true
-script = ExtResource("3_ii7q4")
 
-[node name="Brush" type="Sprite2D" parent="DrawViewport"]
-z_index = 1
-scale = Vector2(2, 2)
-texture = ExtResource("4_0xg3u")
-
-[node name="Noise" type="Sprite2D" parent="DrawViewport"]
-show_behind_parent = true
+[node name="HeightMap" type="Sprite2D" parent="DrawViewport"]
 texture = ExtResource("6_ngrbg")
 centered = false
 region_rect = Rect2(0.53, 0, 490.05, 319.42)

@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ojop0b2r112o"]
-
-[ext_resource type="Script" path="res://planet/components/PixelCollider.gd" id="1_rfe8f"]
-
-[node name="PixelCollider" type="Node3D"]
-script = ExtResource("1_rfe8f")
