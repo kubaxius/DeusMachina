@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://dkn3ovybcj06p"]
+
+[node name="PlanetGenerator" type="Node3D"]

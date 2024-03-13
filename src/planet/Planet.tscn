@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dg7ra70u1lhvq"]
+[gd_scene load_steps=6 format=3 uid="uid://dg7ra70u1lhvq"]
 
 [ext_resource type="PackedScene" uid="uid://dw6eugjrkh824" path="res://planet/Globe.blend" id="1_r78s8"]
 [ext_resource type="Script" path="res://planet/Planet.gd" id="2_76ehy"]
 [ext_resource type="Shader" uid="uid://dpfkaigfla5" path="res://planet/test_shader.tres" id="2_rbp4x"]
-[ext_resource type="PackedScene" uid="uid://ojop0b2r112o" path="res://planet/components/PixelCollider.tscn" id="4_2hjb6"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kpxbf"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hqh5b"]
 render_priority = 0
 shader = ExtResource("2_rbp4x")
 
@@ -16,11 +15,10 @@ radius = 1.0
 script = ExtResource("2_76ehy")
 
 [node name="Globe" parent="." index="0"]
-surface_material_override/0 = SubResource("ShaderMaterial_kpxbf")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0396392, 0, 0)
+surface_material_override/0 = SubResource("ShaderMaterial_hqh5b")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Globe" index="0"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Globe/StaticBody3D" index="0"]
 shape = SubResource("SphereShape3D_llal2")
-
-[node name="PixelCollider" parent="." index="1" instance=ExtResource("4_2hjb6")]
