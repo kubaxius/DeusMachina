@@ -13,3 +13,8 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# gd-plug plugin manager
+.plugged/
+src/addons/*
+!src/addons/gd-plug/plug.gd
