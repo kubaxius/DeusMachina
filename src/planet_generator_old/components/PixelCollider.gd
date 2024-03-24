@@ -1,9 +1,9 @@
 ## PixelCollider ##
 extends Node3D
 
-@onready var uv256:Uv3DMap = _load_uv_map("256uv3d.tres")
-@onready var uv512:Uv3DMap = _load_uv_map("512uv3d.tres")
-@onready var uv1k:Uv3DMap = _load_uv_map("1kuv3d.tres")
+@onready var uv256 = []#_load_uv_map("256uv3d.tres")
+@onready var uv512 = []#_load_uv_map("512uv3d.tres")
+@onready var uv1k = []#_load_uv_map("1kuv3d.tres")
 #@onready var uv2k:Uv3DMap = _load_uv_map("2kuv3d.tres")
 #@onready var uv4k:Uv3DMap = _load_uv_map("4kuv3d.tres")
 
@@ -47,7 +47,7 @@ func _get_starting_pixel(collider):
 	return null
 
 
-func _get_neighbors(map:Uv3DMap, pixel:Vector2i, excluded:Array):
+func _get_neighbors(map, pixel:Vector2i, excluded:Array):
 	var dirs = [map.TOP, map.BOTTOM, map.RIGHT, map.LEFT]
 	var neighbors = []
 	

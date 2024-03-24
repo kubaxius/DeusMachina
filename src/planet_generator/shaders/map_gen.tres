@@ -1,0 +1,68 @@
+[gd_resource type="VisualShader" load_steps=9 format=3 uid="uid://0r6c85l42j5q"]
+
+[ext_resource type="Script" path="res://addons/shaderV/rgba/noise/worley3d.gd" id="1_0r4jh"]
+
+[sub_resource type="VisualShaderNodeVaryingGetter" id="VisualShaderNodeVaryingGetter_i7wl6"]
+varying_name = "position"
+varying_type = 4
+
+[sub_resource type="VisualShaderNodeCustom" id="VisualShaderNodeCustom_qnoif"]
+default_input_values = [1, Vector3(0, 0, 0), 2, 5.0, 3, 1.0, 4, 0.0]
+initialized = true
+script = ExtResource("1_0r4jh")
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id="VisualShaderNodeVectorDecompose_uwuun"]
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_ia2mx"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_8q3wd"]
+constant = 7.0
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_70p0b"]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_evsoa"]
+varying_name = "position"
+varying_type = 4
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying vec3 position;
+
+
+
+
+void vertex() {
+// Input:2
+	vec3 n_out2p0 = VERTEX;
+
+
+// VaryingSetter:3
+	position = n_out2p0;
+
+
+}
+"
+varyings/position = "0,4"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_70p0b")
+nodes/vertex/2/position = Vector2(-280, 220)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_evsoa")
+nodes/vertex/3/position = Vector2(100, 220)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(580, -340)
+nodes/fragment/2/node = SubResource("VisualShaderNodeVaryingGetter_i7wl6")
+nodes/fragment/2/position = Vector2(-520, 140)
+nodes/fragment/3/node = SubResource("VisualShaderNodeCustom_qnoif")
+nodes/fragment/3/position = Vector2(120, 160)
+nodes/fragment/4/node = SubResource("VisualShaderNodeVectorDecompose_uwuun")
+nodes/fragment/4/position = Vector2(-320, 240)
+nodes/fragment/5/node = SubResource("VisualShaderNodeFloatOp_ia2mx")
+nodes/fragment/5/position = Vector2(-80, 420)
+nodes/fragment/6/node = SubResource("VisualShaderNodeFloatConstant_8q3wd")
+nodes/fragment/6/position = Vector2(-520, 420)
+nodes/fragment/connections = PackedInt32Array(2, 0, 3, 0, 2, 0, 4, 0, 4, 2, 5, 0, 5, 0, 3, 4, 6, 0, 5, 1, 6, 0, 3, 2)

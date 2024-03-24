@@ -50,7 +50,7 @@ func vector_to_intersection(vector: Vector3):
 	return intersection
 
 
-func generate_noise_texture(uv_3d: Uv3DMap, size: Vector2i):
+func generate_noise_texture(uv_3d, size: Vector2i):
 	var noise := FastNoiseLite.new()
 	noise.seed = gen_seed
 	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
