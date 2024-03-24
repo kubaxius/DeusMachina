@@ -18,11 +18,12 @@ config/icon="res://icon.svg"
 [autoload]
 
 UvPosition="*res://utils/uv_position.gd"
-Utils="res://utils/utils.gd"
+Utils="*res://utils/utils.gd"
+Signal_Debugger="*res://addons/SignalVisualizer/Debugger/SignalDebugger.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/bottom_panel_shortcuts/plugin.cfg", "res://addons/draw3d/plugin.cfg", "res://addons/gdDelaunay/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/icosphere/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg", "res://addons/log/plugin.cfg")
+enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/bottom_panel_shortcuts/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg")
 
 [file_customization]
 
