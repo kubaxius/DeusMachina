@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 UvPosition="*res://utils/uv_position.gd"
-Utils="*res://utils/utils.gd"
 Signal_Debugger="*res://addons/SignalVisualizer/Debugger/SignalDebugger.gd"
 
 [editor_plugins]
@@ -89,6 +88,7 @@ secondary_click={
 
 [layer_names]
 
+3d_render/layer_20="map_generation"
 3d_physics/layer_1="environment"
 
 [rendering]

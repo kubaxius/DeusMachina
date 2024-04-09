@@ -1,3 +1,4 @@
+# HACK: This whole script is only temporary
 @tool
 extends CharacterBody3D
 class_name UCharacterBody3D

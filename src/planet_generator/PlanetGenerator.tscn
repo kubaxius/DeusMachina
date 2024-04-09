@@ -1,4 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dkn3ovybcj06p"]
+[gd_scene load_steps=15 format=3 uid="uid://dkn3ovybcj06p"]
+
+[ext_resource type="Script" path="res://planet_generator/PlanetGenerator.gd" id="1_4wwxs"]
+[ext_resource type="Shader" path="res://planet_generator/shaders/landmass_generator.gdshader" id="2_dhd5c"]
+[ext_resource type="Shader" path="res://planet_generator/shaders/raymarch.gdshader" id="3_gggem"]
+[ext_resource type="PackedScene" uid="uid://grm4ertrk63i" path="res://planet_generator/TextureBaker.tscn" id="4_3t5c0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_u7pe3"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -13,13 +18,125 @@ sky = SubResource("Sky_ppx6c")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="SphereMesh" id="SphereMesh_6c2b3"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hl4dt"]
+render_priority = 0
+shader = ExtResource("2_dhd5c")
+shader_parameter/capture_size = 1.0
+shader_parameter/unwrap_location = Vector3(0, 0, 0)
+shader_parameter/unwrap_scale = 2.0
+shader_parameter/CONTINENTS_NUMBER = null
+shader_parameter/SHAPES_PER_CONTINENT = null
+shader_parameter/TRANSFORM_COMPONENTS = null
+shader_parameter/SHAPE_DATA = null
+shader_parameter/PLANET_POSITION = Vector3(0, 0, 0)
+
+[sub_resource type="GDScript" id="GDScript_ty0ra"]
+script/source = "extends Camera3D
+
+@export_range(0, 100, 1) var sensitivity = 20
+
+@onready var h_gimbal: Node3D = get_parent().get_parent()
+@onready var v_gimbal: Node3D = get_parent()
+
+
+func _unhandled_input(event):
+	if event is InputEventMouseMotion:
+		if Input.is_action_pressed(\"main_click\"):
+			v_gimbal.rotate_x(-event.relative.y/(101 - sensitivity))
+			h_gimbal.rotate_y(-event.relative.x/(101 - sensitivity))
+			v_gimbal.rotation.x = clamp(v_gimbal.rotation.x, -PI/2, PI/2)
+"
+
+[sub_resource type="GDScript" id="GDScript_628gw"]
+script/source = "extends HSlider
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	change_visibility_of_visualizer(value)
+
+
+func _on_value_changed(val):
+	change_visibility_of_visualizer(val)
+
+
+func change_visibility_of_visualizer(val):
+	%ShapeVisualizer.get_active_material(0)\\
+			.set_shader_parameter(\"alpha\", val)
+	
+	if val == 0:
+		%ShapeVisualizer.hide()
+	else:
+		%ShapeVisualizer.show()
+"
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_3s8m8"]
+viewport_path = NodePath("TextureBaker")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_70vmj"]
+render_priority = 0
+shader = ExtResource("3_gggem")
+shader_parameter/CONTINENTS_NUMBER = null
+shader_parameter/SHAPES_PER_CONTINENT = null
+shader_parameter/TRANSFORM_COMPONENTS = null
+shader_parameter/SHAPE_DATA = null
+shader_parameter/MAX_STEPS = 100
+shader_parameter/MAX_DIST = 100.0
+shader_parameter/SURF_DIST = 0.01
+shader_parameter/alpha = 0.1
+
+[sub_resource type="BoxMesh" id="BoxMesh_s36je"]
+material = SubResource("ShaderMaterial_70vmj")
+flip_faces = true
+size = Vector3(6, 6, 6)
+
 [node name="PlanetGenerator" type="Node3D"]
+script = ExtResource("1_4wwxs")
+number_of_continents = 4
+max_shape_size = 2.0
+min_continent_spread = 0.2
+max_continent_spread = 0.4
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_um6xj")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
-current = true
+[node name="Globe" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+mesh = SubResource("SphereMesh_6c2b3")
+surface_material_override/0 = SubResource("ShaderMaterial_hl4dt")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="HGimbal" type="Node3D" parent="."]
+
+[node name="VGimbal" type="Node3D" parent="HGimbal"]
+
+[node name="Camera3D" type="Camera3D" parent="HGimbal/VGimbal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.24719)
+current = true
+size = 1.0753
+script = SubResource("GDScript_ty0ra")
+
+[node name="ShapeVisualizerVisibility" type="HSlider" parent="HGimbal/VGimbal/Camera3D"]
+offset_left = 326.0
+offset_right = 555.0
+offset_bottom = 16.0
+max_value = 1.0
+step = 0.1
+script = SubResource("GDScript_628gw")
+
+[node name="Sprite2D" type="Sprite2D" parent="HGimbal/VGimbal/Camera3D"]
+scale = Vector2(0.316406, 0.316406)
+texture = SubResource("ViewportTexture_3s8m8")
+centered = false
+
+[node name="ShapeVisualizer" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+mesh = SubResource("BoxMesh_s36je")
+metadata/_edit_lock_ = true
+
+[node name="TextureBaker" parent="." instance=ExtResource("4_3t5c0")]
+
+[connection signal="value_changed" from="HGimbal/VGimbal/Camera3D/ShapeVisualizerVisibility" to="HGimbal/VGimbal/Camera3D/ShapeVisualizerVisibility" method="_on_value_changed"]

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dw6eugjrkh824" path="res://planet/Globe.blend" id="1_r78s8"]
 [ext_resource type="Script" path="res://planet/Planet.gd" id="2_76ehy"]
-[ext_resource type="Shader" uid="uid://0r6c85l42j5q" path="res://planet_generator/shaders/map_gen.tres" id="3_bys60"]
+[ext_resource type="Shader" path="res://planet_generator/shaders/landmass_generator.gdshader" id="3_bys60"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g6irj"]
 render_priority = 0

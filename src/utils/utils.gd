@@ -1,3 +1,4 @@
+# utils.gd
 class_name Utils extends Node
 
 
@@ -18,5 +19,21 @@ static func project_camera_ray(camera: Camera3D, world:World3D, viewport:Viewpor
 	return intersection
 
 
-static func get_random_vector(rng):
+static func get_random_vector(rng: RandomNumberGenerator) -> Vector3:
 	return Vector3(rng.randfn(), rng.randfn(), rng.randfn()).normalized()
+
+
+## returns transform rotated in random direction 
+static func get_randomly_rotated_transform(rng: RandomNumberGenerator) -> Transform3D:
+	var trans = Transform3D.IDENTITY
+	trans = trans.looking_at(Utils.get_random_vector(rng), Utils.get_random_vector(rng))
+	return trans
+
+
+static func break_transform_into_vectors(trans: Transform3D) -> Array:
+	var ret = []
+	ret.append(trans.basis.x)
+	ret.append(trans.basis.y)
+	ret.append(trans.basis.z)
+	ret.append(trans.origin)
+	return ret
