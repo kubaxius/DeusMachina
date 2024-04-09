@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://6ptuao7cvc1c"]
+
+[ext_resource type="Script" path="res://planet_generator/PlanetGeneratorScreen.gd" id="1_pb4oc"]
+[ext_resource type="PackedScene" uid="uid://ciiafhg4xcxi" path="res://planet_generator/ui/PlanetPreview.tscn" id="1_tmov3"]
+[ext_resource type="PackedScene" uid="uid://dkn3ovybcj06p" path="res://planet_generator/PlanetGenerator.tscn" id="2_gyftb"]
+[ext_resource type="Script" path="res://planet_generator/GeneratorSettings.gd" id="3_mi076"]
+
+[sub_resource type="Resource" id="Resource_opb7j"]
+script = ExtResource("3_mi076")
+rng_seed = 2137
+polar_capes = true
+number_of_continents = 3
+shapes_per_continent = 5
+min_shape_size = 0.5
+max_shape_size = 1.0
+min_continent_spread = 0.1
+max_continent_spread = 0.1
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_85tce"]
+
+[node name="PlanetGeneratorScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pb4oc")
+
+[node name="PlanetGenerator" parent="." instance=ExtResource("2_gyftb")]
+unique_name_in_owner = true
+settings = SubResource("Resource_opb7j")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftPanel" type="ReferenceRect" parent="HSplitContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Preview2D" type="TextureRect" parent="HSplitContainer/LeftPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 12.0
+offset_right = 1820.0
+offset_bottom = 980.0
+texture = SubResource("PlaceholderTexture2D_85tce")
+expand_mode = 2
+
+[node name="Preview" type="ReferenceRect" parent="HSplitContainer"]
+custom_minimum_size = Vector2(800, 800)
+layout_mode = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="HSplitContainer/Preview"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="PlanetPreview" parent="HSplitContainer/Preview/SubViewportContainer" instance=ExtResource("1_tmov3")]
+handle_input_locally = false
+size = Vector2i(1608, 980)
+render_target_update_mode = 4
+planet_generator = NodePath("../../../../PlanetGenerator")

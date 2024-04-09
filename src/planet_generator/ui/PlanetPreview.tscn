@@ -1,0 +1,91 @@
+[gd_scene load_steps=10 format=3 uid="uid://ciiafhg4xcxi"]
+
+[ext_resource type="Script" path="res://planet_generator/ui/PlanetPreview.gd" id="1_s35qb"]
+[ext_resource type="Shader" path="res://planet_generator/shaders/raymarch.gdshader" id="2_rhc83"]
+
+[sub_resource type="Environment" id="Environment_tpeo7"]
+
+[sub_resource type="GDScript" id="GDScript_xs0to"]
+script/source = "extends DirectionalLight3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	rotate(Vector3.UP, delta)
+"
+
+[sub_resource type="GDScript" id="GDScript_2mr4h"]
+script/source = "extends Camera3D
+
+@export_range(0, 100, 1) var sensitivity = 20
+
+@onready var h_gimbal: Node3D = get_parent().get_parent()
+@onready var v_gimbal: Node3D = get_parent()
+
+
+func _unhandled_input(event):
+	if event is InputEventMouseMotion:
+		if Input.is_action_pressed(\"main_click\"):
+			v_gimbal.rotate_x(-event.relative.y/(101 - sensitivity))
+			h_gimbal.rotate_y(-event.relative.x/(101 - sensitivity))
+			v_gimbal.rotation.x = clamp(v_gimbal.rotation.x, -PI/2, PI/2)
+"
+
+[sub_resource type="SphereMesh" id="SphereMesh_3a0wy"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n2gyl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_70vmj"]
+render_priority = 0
+shader = ExtResource("2_rhc83")
+shader_parameter/CONTINENTS_NUMBER = null
+shader_parameter/SHAPES_PER_CONTINENT = null
+shader_parameter/TRANSFORM_COMPONENTS = null
+shader_parameter/SHAPE_DATA = null
+shader_parameter/MAX_STEPS = 100
+shader_parameter/MAX_DIST = 100.0
+shader_parameter/SURF_DIST = 0.01
+shader_parameter/alpha = 0.1
+
+[sub_resource type="BoxMesh" id="BoxMesh_y4bcr"]
+material = SubResource("ShaderMaterial_70vmj")
+flip_faces = true
+size = Vector3(6, 6, 6)
+
+[node name="PlanetPreview" type="SubViewport"]
+size = Vector2i(1920, 1080)
+script = ExtResource("1_s35qb")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tpeo7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 0.871, 0.491284, 0, -0.491284, 0.871, 0, 0, 0)
+script = SubResource("GDScript_xs0to")
+
+[node name="HGimbal" type="Node3D" parent="."]
+
+[node name="VGimbal" type="Node3D" parent="HGimbal"]
+
+[node name="Camera3D" type="Camera3D" parent="HGimbal/VGimbal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.24719)
+current = true
+size = 1.0753
+script = SubResource("GDScript_2mr4h")
+
+[node name="PreviewGlobe" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+mesh = SubResource("SphereMesh_3a0wy")
+surface_material_override/0 = SubResource("StandardMaterial3D_n2gyl")
+
+[node name="ShapeVisualizer" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+mesh = SubResource("BoxMesh_y4bcr")
+metadata/_edit_lock_ = true

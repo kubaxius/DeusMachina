@@ -17,3 +17,6 @@ func _plugging():
 	plug("arkology/ShaderV")
 	plug("paddy-exe/GodotVisualShader-Extras")
 	plug("kubaxius/SDFAddon")
+	
+	# state machine
+	plug("derkork/godot-statecharts")

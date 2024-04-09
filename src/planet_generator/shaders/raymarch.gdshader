@@ -1,7 +1,8 @@
 shader_type spatial;
 render_mode depth_test_disabled;
 
-#include "res://planet_generator/shaders/multi_shape_lib.gdshaderinc"
+#include "res://addons/sdf_visual_shader_nodes/3D/sphere.gdshaderinc"
+#include "res://planet_generator/shaders/includes/multi_shape_lib.gdshaderinc"
 
 uniform int MAX_STEPS = 100;
 uniform float MAX_DIST = 100.0;
@@ -34,6 +35,10 @@ float RayMarch(vec3 ray_origin, vec3 ray_direction, mat4 transform) {
 	
 	for(int i = 0; i < MAX_STEPS; i++){
 		vec3 pos = ray_origin + (ray_direction * dist);
+		
+		// Don't show parts of shapes inside planet
+		if(length(pos) < 1.0){return 1000.0;}
+		
 		float current_dist = GetDistance(pos, transform);
 		dist += current_dist;
 		if(dist > MAX_DIST || current_dist < SURF_DIST) break;
@@ -48,13 +53,13 @@ void fragment() {
 	vec3 ray_origin = CAMERA_POSITION_WORLD;
 	vec3 ray_direction = normalize(ray_origin - ws_pixel_pos);
 	
-	float dist = RayMarch(ray_origin, ray_direction, trans);
+	float dist_traveled = RayMarch(ray_origin, ray_direction, trans);
 	
-	ALBEDO = vec3(step(dist, MAX_DIST));
-	if(dist < MAX_DIST){
+	ALBEDO = vec3(step(dist_traveled, MAX_DIST));
+	if(dist_traveled < MAX_DIST){
 		ALPHA = alpha;
 	}else{
 		ALPHA = 0.0;
 	}
-	NORMAL = GetNormal(ray_origin + ray_direction * dist, trans);
+	NORMAL = GetNormal(ray_origin + ray_direction * dist_traveled, trans);
 }

@@ -3,14 +3,17 @@ shader_type spatial;
 #include "res://addons/shaderV/rgba/noise/simplex3d.gdshaderinc"
 
 
-#include "res://planet_generator/shaders/unwrap.gdshaderinc"
-#include "res://planet_generator/shaders/multi_shape_lib.gdshaderinc"
+#include "res://planet_generator/shaders/includes/unwrap.gdshaderinc"
+#include "res://planet_generator/shaders/includes/multi_shape_lib.gdshaderinc"
 
-varying vec3 WS_PIXEL_POS;
 
 uniform vec3 PLANET_POSITION = vec3(0.0);
 
-instance uniform bool UNWRAP = false;
+instance uniform int STATE = 2;
+
+instance uniform bool UNWRAP = true;
+
+varying vec3 WS_PIXEL_POS;
 
 
 float get_distance_to_sea(vec3 pos){
@@ -65,11 +68,16 @@ void vertex(){
 
 void fragment() {
 	
-	float height = get_height(WS_PIXEL_POS);
+	switch(STATE){
+		case 2:
+			ALBEDO = get_color(get_height(WS_PIXEL_POS));
+			break;
+		case 0:
+			ALBEDO = vec3(get_distance_to_sea(WS_PIXEL_POS));
+			break;
+		case 1:
+			ALBEDO = vec3(get_height(WS_PIXEL_POS));
+			break;
+	}
 	
-	ALBEDO = get_color(height);
-	
-	
-	//ALBEDO = vec3(1.0-step(0.0, height));
-	//ALBEDO = vec3(clamp(height, 0.0, 1.0));
 }

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Deus Machina"
-run/main_scene="res://planet_generator/PlanetGenerator.tscn"
+run/main_scene="res://planet_generator/PlanetGeneratorScreen.tscn"
 config/features=PackedStringArray("4.2", "Double Precision", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -20,9 +20,17 @@ config/icon="res://icon.svg"
 UvPosition="*res://utils/uv_position.gd"
 Signal_Debugger="*res://addons/SignalVisualizer/Debugger/SignalDebugger.gd"
 
+[display]
+
+window/size/viewport_width=1820
+window/size/viewport_height=980
+window/size/initial_position_type=0
+window/size/initial_position=Vector2i(1920, 0)
+window/stretch/mode="viewport"
+
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/bottom_panel_shortcuts/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg")
+enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/bottom_panel_shortcuts/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg")
 
 [file_customization]
 
@@ -94,4 +102,4 @@ secondary_click={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-environment/defaults/default_clear_color=Color(0.470803, 0.83136, 0.999823, 1)
+environment/defaults/default_clear_color=Color(3.60981e-08, 0.0479789, 0.0979424, 1)
