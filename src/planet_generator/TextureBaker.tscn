@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://grm4ertrk63i"]
+[gd_scene load_steps=6 format=3 uid="uid://grm4ertrk63i"]
 
 [ext_resource type="Shader" path="res://planet_generator/shaders/landmass_generator.gdshader" id="1_5ncll"]
 [ext_resource type="Script" path="res://planet_generator/TextureBaker.gd" id="1_ei2uh"]
@@ -10,6 +10,19 @@ height = 2.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hl4dt"]
 render_priority = 0
 shader = ExtResource("1_5ncll")
+shader_parameter/capture_size = 1.0
+shader_parameter/unwrap_location = Vector3(0, 0, 0)
+shader_parameter/unwrap_scale = 1.0
+shader_parameter/CONTINENTS_NUMBER = null
+shader_parameter/SHAPES_PER_CONTINENT = null
+shader_parameter/TRANSFORM_COMPONENTS = null
+shader_parameter/SHAPE_DATA = null
+shader_parameter/PLANET_POSITION = Vector3(0, 0, 0)
+shader_parameter/SEA_LEVEL = 0.2
+shader_parameter/MODE = 2
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_mykxs"]
+size = Vector2(10, 1)
 
 [node name="TextureBaker" type="SubViewport"]
 own_world_3d = true
@@ -25,6 +38,16 @@ layers = 524289
 mesh = SubResource("SphereMesh_6c2b3")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_hl4dt")
+
+[node name="Texture" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visibility_layer = 524288
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("PlaceholderTexture2D_mykxs")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)

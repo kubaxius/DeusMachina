@@ -8,32 +8,32 @@ shader_type spatial;
 
 
 uniform vec3 PLANET_POSITION = vec3(0.0);
+uniform float SEA_LEVEL = 0.2;
 
-instance uniform int STATE = 2;
-
+uniform int MODE = 0;
 instance uniform bool UNWRAP = true;
 
 varying vec3 WS_PIXEL_POS;
-
-
-float get_distance_to_sea(vec3 pos){
-	float dist = clamp(-get_distance_to_shapes(pos), 0.0, 1.0);
-	return dist;
-}
 
 
 float get_height(vec3 pos){
 	float height = -get_distance_to_shapes(pos);
 	height -= 0.3 * _simplex3dNoiseFunc(pos * 7.0) - 0.15;
 	height -= 0.1 * _simplex3dNoiseFunc(pos * 20.0) - 0.05;
-	return clamp(height * 2.0, 0.0, 1.0);
+	return clamp((height + 1.0)/2.0, 0.0, 1.0);
+}
+
+
+float get_sea_value(vec3 pos){
+	float water = 1.0 - step(SEA_LEVEL, get_height(pos));
+	return water;
 }
 
 
 vec3 get_color(float height){
 	vec3 color;
 	
-	if(height > clamp((sin(TIME) + 0.3) * 0.2, 0.0, 1.0)){
+	if(height > SEA_LEVEL){
 		color = vec3(0.0, 1.0, 0.0);
 		float north_cape_bounds = 0.95 - (0.1 * _simplex3dNoiseFunc(WS_PIXEL_POS * 7.0));
 		float south_cape_bounds = -0.9 + (0.1 * _simplex3dNoiseFunc(WS_PIXEL_POS * 7.0));
@@ -68,14 +68,14 @@ void vertex(){
 
 void fragment() {
 	
-	switch(STATE){
-		case 2:
+	switch(MODE){
+		case 0:
 			ALBEDO = get_color(get_height(WS_PIXEL_POS));
 			break;
-		case 0:
-			ALBEDO = vec3(get_distance_to_sea(WS_PIXEL_POS));
-			break;
 		case 1:
+			ALBEDO = vec3(get_sea_value(WS_PIXEL_POS));
+			break;
+		case 2:
 			ALBEDO = vec3(get_height(WS_PIXEL_POS));
 			break;
 	}

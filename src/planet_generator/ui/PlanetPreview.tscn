@@ -5,20 +5,6 @@
 
 [sub_resource type="Environment" id="Environment_tpeo7"]
 
-[sub_resource type="GDScript" id="GDScript_xs0to"]
-script/source = "extends DirectionalLight3D
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	rotate(Vector3.UP, delta)
-"
-
 [sub_resource type="GDScript" id="GDScript_2mr4h"]
 script/source = "extends Camera3D
 
@@ -41,6 +27,19 @@ radius = 1.0
 height = 2.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n2gyl"]
+
+[sub_resource type="GDScript" id="GDScript_ivd5e"]
+script/source = "extends MeshInstance3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+func _process(delta):
+	rotate(Vector3.UP, delta/2)
+"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_70vmj"]
 render_priority = 0
@@ -68,7 +67,6 @@ environment = SubResource("Environment_tpeo7")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 0.871, 0.491284, 0, -0.491284, 0.871, 0, 0, 0)
-script = SubResource("GDScript_xs0to")
 
 [node name="HGimbal" type="Node3D" parent="."]
 
@@ -84,6 +82,7 @@ script = SubResource("GDScript_2mr4h")
 unique_name_in_owner = true
 mesh = SubResource("SphereMesh_3a0wy")
 surface_material_override/0 = SubResource("StandardMaterial3D_n2gyl")
+script = SubResource("GDScript_ivd5e")
 
 [node name="ShapeVisualizer" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true

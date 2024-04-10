@@ -6,19 +6,19 @@ class_name GeneratorSettings extends Resource
 		rng.seed = val
 
 @export var polar_capes := true
-
 @export var number_of_continents: int = 3 : 
 	get:
 		if polar_capes:
-			return number_of_continents
-		else:
 			return number_of_continents + 2
-
+		else:
+			return number_of_continents
 @export var shapes_per_continent: int = 5
 @export_range(0.1, 2.0, 0.1) var min_shape_size: float = 0.5
 @export_range(0.1, 2.0, 0.1) var max_shape_size: float = 1.0
 @export_range(0.1, 1.0, 0.1) var min_continent_spread: float = 0.1
 @export_range(0.1, 1.0, 0.1) var max_continent_spread: float = 0.1
+
+@export_range(0.1, 1.0, 0.1) var sea_level: float = 0.2
 
 var rng := RandomNumberGenerator.new()
 
@@ -26,7 +26,6 @@ var continents_transform_data
 var continents_shape_data
 
 func _init():
-	rng.seed = rng_seed
 	regenerate_data()
 
 
@@ -106,4 +105,5 @@ func _get_continents_transform_data() -> PackedVector3Array:
 func regenerate_data():
 	continents_transform_data = _get_continents_transform_data()
 	continents_shape_data = _get_continents_shape_data()
+	rng.seed = rng_seed
 

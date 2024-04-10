@@ -11,7 +11,9 @@ script = ExtResource("1_4wwxs")
 
 [node name="TextureBaker" parent="." instance=ExtResource("4_3t5c0")]
 unique_name_in_owner = true
+handle_input_locally = false
 size = Vector2i(2048, 1024)
+render_target_update_mode = 4
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("2_c4qwx")

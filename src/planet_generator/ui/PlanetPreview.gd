@@ -8,5 +8,8 @@ func _ready():
 	%PreviewGlobe.set_surface_override_material(0, mat)
 	await get_tree().create_timer(1).timeout
 	mat.albedo_texture = ImageTexture.create_from_image(get_node(planet_generator).height_map)
-	await get_tree().create_timer(1).timeout
-	mat.albedo_texture = ImageTexture.create_from_image(get_node(planet_generator).sea_dist_map)
+	#await get_tree().create_timer(1).timeout
+	#mat.albedo_texture = ImageTexture.create_from_image(get_node(planet_generator).sea_map)
+	#await get_tree().create_timer(1).timeout
+	#mat.albedo_texture = ImageTexture.create_from_image(get_node(planet_generator).humidity_map)
+	
