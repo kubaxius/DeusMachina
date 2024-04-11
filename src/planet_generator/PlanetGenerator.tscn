@@ -1,19 +1,71 @@
-[gd_scene load_steps=6 format=3 uid="uid://dkn3ovybcj06p"]
+[gd_scene load_steps=10 format=3 uid="uid://dkn3ovybcj06p"]
 
 [ext_resource type="Script" path="res://planet_generator/PlanetGenerator.gd" id="1_4wwxs"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_c4qwx"]
+[ext_resource type="Script" path="res://planet_generator/TextureBaker.gd" id="2_sboq7"]
+[ext_resource type="Shader" path="res://planet_generator/shaders/landmass_generator.gdshader" id="3_s4o1t"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_ymj71"]
-[ext_resource type="PackedScene" uid="uid://grm4ertrk63i" path="res://planet_generator/TextureBaker.tscn" id="4_3t5c0"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_rluyl"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6c2b3"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hl4dt"]
+render_priority = 0
+shader = ExtResource("3_s4o1t")
+shader_parameter/capture_size = 1.0
+shader_parameter/unwrap_location = Vector3(0, 0, 0)
+shader_parameter/unwrap_scale = 1.0
+shader_parameter/CONTINENTS_NUMBER = null
+shader_parameter/SHAPES_PER_CONTINENT = null
+shader_parameter/TRANSFORM_COMPONENTS = null
+shader_parameter/SHAPE_DATA = null
+shader_parameter/PLANET_POSITION = Vector3(0, 0, 0)
+shader_parameter/SEA_LEVEL = 0.2
+shader_parameter/MODE = 2
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_mykxs"]
+size = Vector2(10, 1)
 
 [node name="PlanetGenerator" type="Node"]
 script = ExtResource("1_4wwxs")
 
-[node name="TextureBaker" parent="." instance=ExtResource("4_3t5c0")]
+[node name="BiomeGenerator" type="Node" parent="."]
+
+[node name="TextureBaker" type="SubViewport" parent="."]
 unique_name_in_owner = true
+own_world_3d = true
 handle_input_locally = false
+debug_draw = 1
 size = Vector2i(2048, 1024)
 render_target_update_mode = 4
+script = ExtResource("2_sboq7")
+
+[node name="UnwrappedGlobe" type="MeshInstance3D" parent="TextureBaker"]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 0, 0, 0)
+layers = 524289
+mesh = SubResource("SphereMesh_6c2b3")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_hl4dt")
+
+[node name="Texture" type="TextureRect" parent="TextureBaker"]
+unique_name_in_owner = true
+visibility_layer = 524288
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("PlaceholderTexture2D_mykxs")
+
+[node name="Camera3D" type="Camera3D" parent="TextureBaker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+keep_aspect = 0
+cull_mask = 524288
+projection = 1
+size = 2.0
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("2_c4qwx")

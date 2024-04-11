@@ -33,7 +33,7 @@ func _unhandled_input(event):
 			image = %PlanetGenerator.height_map
 			texture = ImageTexture.create_from_image(image)
 			await get_tree().create_timer(1).timeout
-			image = %PlanetGenerator.humidity_map
+			image = %PlanetGenerator.sunlight_map
 			texture = ImageTexture.create_from_image(image)
 "
 

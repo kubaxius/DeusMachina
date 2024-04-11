@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 UvPosition="*res://utils/uv_position.gd"
-Signal_Debugger="*res://addons/SignalVisualizer/Debugger/SignalDebugger.gd"
 
 [display]
 

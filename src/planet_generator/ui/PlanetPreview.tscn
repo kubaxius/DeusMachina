@@ -66,7 +66,7 @@ script = ExtResource("1_s35qb")
 environment = SubResource("Environment_tpeo7")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
-transform = Transform3D(1, 0, 0, 0, 0.871, 0.491284, 0, -0.491284, 0.871, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
 
 [node name="HGimbal" type="Node3D" parent="."]
 

@@ -7,12 +7,13 @@ class_name PlanetGenerator extends Node
 # HACK: You will have to create much better ones.
 var landmass_generator_shader: Shader = preload("res://planet_generator/shaders/landmass_generator.gdshader")
 var humidity_generator_shader: Shader = preload("res://planet_generator/shaders/humidity_generator.gdshader")
-
+var sunlight_generator_shader: Shader = preload("res://planet_generator/shaders/sunlight_generator.gdshader")
 
 enum MAP{COLOR, SEA, HEIGHT}
 var sea_map: Image
 var height_map: Image
 var humidity_map: Image
+var sunlight_map: Image
 
 func _ready():
 	generate()
@@ -52,9 +53,18 @@ func generate_humidity_map():
 	humidity_map = await texture_baker.get_image(material)
 
 
+func generate_sunlight_map():
+	var material = ShaderMaterial.new()
+	material.shader = sunlight_generator_shader
+	send_data_to_continent_shader(material)
+	
+	material.set_shader_parameter("MODE", MAP.HEIGHT)
+	sunlight_map = await texture_baker.get_image(material)
+
 func generate():
 	settings.regenerate_data()
 	
 	await generate_sea_map()
 	await generate_height_map()
 	await generate_humidity_map()
+	await generate_sunlight_map()

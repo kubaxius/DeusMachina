@@ -1,8 +1,6 @@
 shader_type spatial;
 
 #include "res://addons/shaderV/rgba/noise/simplex3d.gdshaderinc"
-
-
 #include "res://planet_generator/shaders/includes/unwrap.gdshaderinc"
 #include "res://planet_generator/shaders/includes/multi_shape_lib.gdshaderinc"
 
