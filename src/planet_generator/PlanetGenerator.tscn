@@ -1,11 +1,15 @@
-[gd_scene load_steps=10 format=3 uid="uid://dkn3ovybcj06p"]
+[gd_scene load_steps=14 format=3 uid="uid://dkn3ovybcj06p"]
 
 [ext_resource type="Script" path="res://planet_generator/PlanetGenerator.gd" id="1_4wwxs"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_c4qwx"]
-[ext_resource type="Script" path="res://planet_generator/TextureBaker.gd" id="2_sboq7"]
+[ext_resource type="Script" path="res://planet_generator/components/GeologyGenerator.gd" id="2_qbil3"]
+[ext_resource type="Script" path="res://planet_generator/components/WeatherGenerator.gd" id="3_p13mx"]
 [ext_resource type="Shader" path="res://planet_generator/shaders/landmass_generator.gdshader" id="3_s4o1t"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_ymj71"]
+[ext_resource type="Script" path="res://planet_generator/components/BiomeGenerator.gd" id="4_3c6js"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_rluyl"]
+[ext_resource type="Script" path="res://planet_generator/components/TextureBaker.gd" id="5_tkf1o"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="11_67ihv"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_6c2b3"]
 radius = 1.0
@@ -23,6 +27,7 @@ shader_parameter/TRANSFORM_COMPONENTS = null
 shader_parameter/SHAPE_DATA = null
 shader_parameter/PLANET_POSITION = Vector3(0, 0, 0)
 shader_parameter/SEA_LEVEL = 0.2
+shader_parameter/NOISE_SHIFT = Vector3(0, 0, 0)
 shader_parameter/MODE = 2
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_mykxs"]
@@ -31,7 +36,17 @@ size = Vector2(10, 1)
 [node name="PlanetGenerator" type="Node"]
 script = ExtResource("1_4wwxs")
 
+[node name="GeologyGenerator" type="Node" parent="."]
+script = ExtResource("2_qbil3")
+connected_state = NodePath("../StateChart/StateMachine/Generation/GeneratingGeology")
+
+[node name="WeatherGenerator" type="Node" parent="."]
+script = ExtResource("3_p13mx")
+connected_state = NodePath("../StateChart/StateMachine/Generation/GeneratingWeather")
+
 [node name="BiomeGenerator" type="Node" parent="."]
+script = ExtResource("4_3c6js")
+connected_state = NodePath("../StateChart/StateMachine/Generation/GeneratingBiomes")
 
 [node name="TextureBaker" type="SubViewport" parent="."]
 unique_name_in_owner = true
@@ -40,7 +55,7 @@ handle_input_locally = false
 debug_draw = 1
 size = Vector2i(2048, 1024)
 render_target_update_mode = 4
-script = ExtResource("2_sboq7")
+script = ExtResource("5_tkf1o")
 
 [node name="UnwrappedGlobe" type="MeshInstance3D" parent="TextureBaker"]
 unique_name_in_owner = true
@@ -68,14 +83,64 @@ projection = 1
 size = 2.0
 
 [node name="StateChart" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("2_c4qwx")
 
-[node name="GenerationState" type="Node" parent="StateChart"]
+[node name="StateMachine" type="Node" parent="StateChart"]
 script = ExtResource("3_ymj71")
-initial_state = NodePath("SeaDistState")
+initial_state = NodePath("Waiting")
 
-[node name="SeaDistState" type="Node" parent="StateChart/GenerationState"]
+[node name="Waiting" type="Node" parent="StateChart/StateMachine"]
 script = ExtResource("4_rluyl")
 
-[node name="HeightState" type="Node" parent="StateChart/GenerationState"]
+[node name="Transition" type="Node" parent="StateChart/StateMachine/Waiting"]
+script = ExtResource("11_67ihv")
+to = NodePath("../../Generation/Setup")
+event = &"generation_started"
+
+[node name="Generation" type="Node" parent="StateChart/StateMachine"]
+script = ExtResource("3_ymj71")
+initial_state = NodePath("GeneratingGeology")
+
+[node name="Setup" type="Node" parent="StateChart/StateMachine/Generation"]
 script = ExtResource("4_rluyl")
+
+[node name="Finished" type="Node" parent="StateChart/StateMachine/Generation/Setup"]
+script = ExtResource("11_67ihv")
+to = NodePath("../../GeneratingGeology")
+event = &"finished"
+
+[node name="GeneratingGeology" type="Node" parent="StateChart/StateMachine/Generation"]
+script = ExtResource("4_rluyl")
+
+[node name="Finished" type="Node" parent="StateChart/StateMachine/Generation/GeneratingGeology"]
+script = ExtResource("11_67ihv")
+to = NodePath("../../GeneratingWeather")
+event = &"finished"
+
+[node name="GeneratingWeather" type="Node" parent="StateChart/StateMachine/Generation"]
+script = ExtResource("4_rluyl")
+
+[node name="Finished" type="Node" parent="StateChart/StateMachine/Generation/GeneratingWeather"]
+script = ExtResource("11_67ihv")
+to = NodePath("../../GeneratingBiomes")
+event = &"finished"
+
+[node name="GeneratingBiomes" type="Node" parent="StateChart/StateMachine/Generation"]
+script = ExtResource("4_rluyl")
+
+[node name="Finished" type="Node" parent="StateChart/StateMachine/Generation/GeneratingBiomes"]
+script = ExtResource("11_67ihv")
+to = NodePath("../../../Finished")
+event = &"finished"
+
+[node name="Finished" type="Node" parent="StateChart/StateMachine"]
+script = ExtResource("4_rluyl")
+
+[node name="Regenerate" type="Node" parent="StateChart/StateMachine/Finished"]
+script = ExtResource("11_67ihv")
+to = NodePath("../../Generation/Setup")
+event = &"generation_started"
+
+[connection signal="state_entered" from="StateChart/StateMachine/Generation/Setup" to="." method="_on_setup_state_entered"]
+[connection signal="state_entered" from="StateChart/StateMachine/Finished" to="." method="_on_finished_state_entered"]

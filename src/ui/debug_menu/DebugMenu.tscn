@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cu5jcaqa8jpf3"]
+
+[ext_resource type="Script" path="res://ui/debug_menu/DebugMenu.gd" id="1_exl8q"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="1_yidla"]
+
+[node name="DebugMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_exl8q")
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("1_yidla")]
+layout_mode = 1
+offset_left = 1154.0

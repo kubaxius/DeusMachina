@@ -7,6 +7,7 @@ shader_type spatial;
 
 uniform vec3 PLANET_POSITION = vec3(0.0);
 uniform float SEA_LEVEL = 0.2;
+uniform vec3 NOISE_SHIFT = vec3(0.0);
 
 uniform int MODE = 0;
 instance uniform bool UNWRAP = true;
@@ -15,9 +16,11 @@ varying vec3 WS_PIXEL_POS;
 
 
 float get_height(vec3 pos){
+	pos.z = -pos.z;
+	vec3 noise_pos = pos + NOISE_SHIFT;
 	float height = -get_distance_to_shapes(pos);
-	height -= 0.3 * _simplex3dNoiseFunc(pos * 7.0) - 0.15;
-	height -= 0.1 * _simplex3dNoiseFunc(pos * 20.0) - 0.05;
+	height -= 0.3 * _simplex3dNoiseFunc(noise_pos * 7.0) - 0.15;
+	height -= 0.1 * _simplex3dNoiseFunc(noise_pos * 20.0) - 0.05;
 	return clamp((height + 1.0)/2.0, 0.0, 1.0);
 }
 
@@ -28,6 +31,7 @@ float get_sea_value(vec3 pos){
 }
 
 
+// ONLY FOR TESTING
 vec3 get_color(float height){
 	vec3 color;
 	

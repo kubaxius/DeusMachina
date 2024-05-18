@@ -1,14 +1,13 @@
 shader_type spatial;
 render_mode depth_test_disabled;
 
-#include "res://addons/sdf_visual_shader_nodes/3D/sphere.gdshaderinc"
 #include "res://planet_generator/shaders/includes/multi_shape_lib.gdshaderinc"
 
-uniform int MAX_STEPS = 100;
+uniform int MAX_STEPS = 1000;
 uniform float MAX_DIST = 100.0;
-uniform float SURF_DIST = 0.01;
+uniform float SURF_DIST = 0.1;
 
-uniform float alpha = 0.1;
+uniform float alpha = 0.9;
 
 
 float GetDistance(vec3 p, mat4 transform){
@@ -17,7 +16,7 @@ float GetDistance(vec3 p, mat4 transform){
 	transform[1] = - transform[1];
 	transform[2] = - transform[2];
 	vec3 np = (transform * vec4(p, 1.0)).xyz;
-	return get_distance_to_shapes(np);
+	return get_distance_to_shapes(p);
 }
 
 vec3 GetNormal(vec3 p, mat4 transform){
@@ -46,6 +45,11 @@ float RayMarch(vec3 ray_origin, vec3 ray_direction, mat4 transform) {
 	return dist;
 }
 
+varying vec3 WS_PIXEL_POS;
+void vertex() {
+	WS_PIXEL_POS = normalize(VERTEX);
+}
+
 
 void fragment() {
 	mat4 trans = inverse(MODEL_MATRIX);
@@ -55,7 +59,7 @@ void fragment() {
 	
 	float dist_traveled = RayMarch(ray_origin, ray_direction, trans);
 	
-	ALBEDO = vec3(step(dist_traveled, MAX_DIST));
+	ALBEDO = vec3(1., 0., 0.);
 	if(dist_traveled < MAX_DIST){
 		ALPHA = alpha;
 	}else{

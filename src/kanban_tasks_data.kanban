@@ -10,12 +10,17 @@
 		{
 			"uuid": "8d951608-8cf9-4e60-aa43-d306b7e55d5b",
 			"title": "Todo",
-			"tasks": []
+			"tasks": [
+				"a6a65415-ab8e-44fb-91d4-af9efb20a52c"
+			]
 		},
 		{
 			"uuid": "a1a83d47-c7db-46e3-8efd-e19cf9d69d11",
 			"title": "Doing",
-			"tasks": []
+			"tasks": [
+				"a58b3c47-2bfc-4847-8c2c-98b2a14145ac",
+				"7a8bb883-ff84-4798-a090-43d980599860"
+			]
 		},
 		{
 			"uuid": "5c3c75d7-4462-43ca-9df9-fe12f7c525f0",
@@ -23,7 +28,38 @@
 			"tasks": []
 		}
 	],
-	"tasks": [],
+	"tasks": [
+		{
+			"uuid": "a58b3c47-2bfc-4847-8c2c-98b2a14145ac",
+			"title": "Generating Geology",
+			"description": "",
+			"category": "51371cab-120d-4a16-afb0-202989e6e2c6",
+			"steps": [
+				{
+					"details": "River generation",
+					"done": false
+				},
+				{
+					"details": "Height Generation",
+					"done": false
+				}
+			]
+		},
+		{
+			"uuid": "7a8bb883-ff84-4798-a090-43d980599860",
+			"title": "Saving Generated Planet",
+			"description": "",
+			"category": "51371cab-120d-4a16-afb0-202989e6e2c6",
+			"steps": []
+		},
+		{
+			"uuid": "a6a65415-ab8e-44fb-91d4-af9efb20a52c",
+			"title": "Generating Biomes",
+			"description": "",
+			"category": "51371cab-120d-4a16-afb0-202989e6e2c6",
+			"steps": []
+		}
+	],
 	"layout": {
 		"columns": [
 			[

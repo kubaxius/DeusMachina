@@ -4,7 +4,7 @@ uniform float unwrap_scale = 1.0;
 
 
 vec3 get_unwrapped_vertex(vec2 uv){
-	
+	//uv.x = mod((uv.x + 0.5), 1.0);
 	// Placed in separate steps for comprehension,
 	// it can be simplified in a single row.
 	vec2 step1 = (uv - 0.5) * capture_size;

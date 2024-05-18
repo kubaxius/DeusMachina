@@ -1,40 +1,50 @@
 [gd_scene load_steps=8 format=3 uid="uid://6ptuao7cvc1c"]
 
-[ext_resource type="Script" path="res://planet_generator/PlanetGeneratorScreen.gd" id="1_pb4oc"]
-[ext_resource type="PackedScene" uid="uid://ciiafhg4xcxi" path="res://planet_generator/ui/PlanetPreview.tscn" id="1_tmov3"]
+[ext_resource type="Script" path="res://ui/planet_generator/PlanetGeneratorScreen.gd" id="1_pb4oc"]
+[ext_resource type="PackedScene" uid="uid://ciiafhg4xcxi" path="res://planet/PlanetPreview.tscn" id="1_tmov3"]
 [ext_resource type="PackedScene" uid="uid://dkn3ovybcj06p" path="res://planet_generator/PlanetGenerator.tscn" id="2_gyftb"]
 [ext_resource type="Script" path="res://planet_generator/GeneratorSettings.gd" id="3_mi076"]
 
 [sub_resource type="Resource" id="Resource_opb7j"]
 script = ExtResource("3_mi076")
-rng_seed = 2137
-polar_capes = true
-number_of_continents = 3
+rng_seed = 2139
+polar_capes = false
+number_of_continents = 1
 shapes_per_continent = 5
-min_shape_size = 0.5
-max_shape_size = 1.0
+min_shape_size = 0.4
+max_shape_size = 1.2
 min_continent_spread = 0.1
-max_continent_spread = 0.1
-sea_level = 0.4
+max_continent_spread = 0.2
+sea_level = 0.5
+axial_tilt = 0.410152
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_85tce"]
 
 [sub_resource type="GDScript" id="GDScript_2u1kg"]
 script/source = "extends TextureRect
 
+var current_map_id: int = 0
+var planet: Planet
 
-func _unhandled_input(event):
-	if event is InputEventKey:
-		if event.pressed and event.keycode == KEY_SPACE:
-			print(\"dupa\")
-			var image = %PlanetGenerator.sea_map
-			texture = ImageTexture.create_from_image(image)
-			await get_tree().create_timer(1).timeout
-			image = %PlanetGenerator.height_map
-			texture = ImageTexture.create_from_image(image)
-			await get_tree().create_timer(1).timeout
-			image = %PlanetGenerator.sunlight_map
-			texture = ImageTexture.create_from_image(image)
+func _on_planet_generator_finished_generation():
+	planet = %PlanetGenerator.planet
+
+
+func change_preview(type: Planet.MapType):
+	var image = planet.get_map(type)
+	texture = ImageTexture.create_from_image(image)
+
+
+func next_map_preview():
+	current_map_id += 1
+	if current_map_id >= Planet.MapType.size():
+		current_map_id = 0
+	change_preview(current_map_id)
+
+
+func _process(_delta):
+	if Input.is_action_just_pressed(\"action_jump\") and planet is Planet:
+		next_map_preview()
 "
 
 [node name="PlanetGeneratorScreen" type="Control"]
@@ -89,4 +99,7 @@ stretch = true
 handle_input_locally = false
 size = Vector2i(1608, 980)
 render_target_update_mode = 4
-planet_generator = NodePath("../../../../PlanetGenerator")
+planet_generator_path = NodePath("../../../../PlanetGenerator")
+
+[connection signal="finished_generation" from="PlanetGenerator" to="HSplitContainer/LeftPanel/Preview2D" method="_on_planet_generator_finished_generation"]
+[connection signal="finished_generation" from="PlanetGenerator" to="HSplitContainer/Preview/SubViewportContainer/PlanetPreview" method="_on_planet_generator_finished_generation"]

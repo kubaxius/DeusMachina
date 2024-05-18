@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Biome" load_steps=2 format=3 uid="uid://bxb6xyg4ujdgk"]
+
+[ext_resource type="Script" path="res://planet/Biome.gd" id="1_y8utt"]
+
+[resource]
+script = ExtResource("1_y8utt")
+main = false
+name = "Desert"
+base_weight = 1.0
+color = Color(1, 1, 0.45098, 1)
+biome_size_min = 1
+biome_size_max = 8
+shore_proximity = false
+height_min = 0.0
+height_max = 1.0
+summer_humidity_min = 0.0
+summer_humidity_max = 1.0
+summer_avg_sun_min = 0.0
+summer_avg_sun_max = 1.0
+spring_humidity_min = 0.0
+spring_humidity_max = 1.0
+spring_avg_sun_min = 0.0
+spring_avg_sun_max = 1.0
+winter_humidity_min = 0.0
+winter_humidity_max = 1.0
+winter_avg_sun_min = 0.0
+winter_avg_sun_max = 1.0

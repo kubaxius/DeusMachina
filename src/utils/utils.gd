@@ -37,3 +37,54 @@ static func break_transform_into_vectors(trans: Transform3D) -> Array:
 	ret.append(trans.basis.z)
 	ret.append(trans.origin)
 	return ret
+
+
+static func get_all_file_paths(path: String) -> Array[String]:
+	var file_paths: Array[String] = []
+	var dir = DirAccess.open(path)
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		var file_path = path + "/" + file_name
+		if dir.current_is_dir():
+			file_paths += get_all_file_paths(file_path)
+		else:
+			file_paths.append(file_path)
+		file_name = dir.get_next()
+	return file_paths 
+
+
+static func array_shuffle(rng,array):
+	for i in array.size():
+		var rand_idx = rng.randi_range(0,array.size()-1)
+		if rand_idx == i:
+			pass
+		else:
+			var temp = array[rand_idx]
+			array[rand_idx] = array[i]
+			array[i] = temp
+	return array
+
+
+static func weighted_choice(array: Array, weights: Array, rng: RandomNumberGenerator):
+	assert(array.size() == weights.size())
+	
+	var sum:float = 0.0
+	for val in weights:
+		sum += val
+	
+	var normalizedWeights = []
+	
+	for val in weights:
+		normalizedWeights.append(val / sum)
+	
+	var rnd = rng.randf()
+	
+	var i = 0
+	var summer:float = 0.0
+	
+	for val in normalizedWeights:
+		summer += val
+		if summer >= rnd:
+			return array[i]
+		i += 1

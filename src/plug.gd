@@ -20,3 +20,6 @@ func _plugging():
 	
 	# state machine
 	plug("derkork/godot-statecharts")
+	
+	# ico sphere
+	plug("MAGGen-hub/Icosphere-Mesh-Godot-Plugin")

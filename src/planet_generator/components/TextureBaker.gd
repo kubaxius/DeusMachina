@@ -1,9 +1,13 @@
 class_name TextureBaker extends SubViewport
 
+# TODO: Make it so that you will be able to set output image size.
 
 func _get_image() -> Image:
 	await RenderingServer.frame_post_draw
-	return get_texture().get_image()
+	var image = get_texture().get_image()
+	#image.flip_y()
+	#image.flip_x()
+	return image
 
 
 func _setup_sphere(material: ShaderMaterial) -> void:
