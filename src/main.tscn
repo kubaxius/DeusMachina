@@ -1,16 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://6wjn33dh1mx6"]
 
-[ext_resource type="PackedScene" uid="uid://6ptuao7cvc1c" path="res://ui/planet_generator/PlanetGeneratorScreen.tscn" id="1_4rvqn"]
+[ext_resource type="PackedScene" uid="uid://dokyq5yuoktpb" path="res://ui/game/GameScreen.tscn" id="1_pt0gq"]
 [ext_resource type="PackedScene" uid="uid://cu5jcaqa8jpf3" path="res://ui/debug_menu/DebugMenu.tscn" id="2_vqjfv"]
 
 [node name="Main" type="Node"]
 
-[node name="PlanetGeneratorScreen" parent="." instance=ExtResource("1_4rvqn")]
+[node name="GameScreen" parent="." instance=ExtResource("1_pt0gq")]
 
 [node name="DebugMenu" parent="." instance=ExtResource("2_vqjfv")]
 
-[node name="StateChartDebugger" parent="DebugMenu" index="0"]
-initial_node_to_watch = NodePath("../../PlanetGeneratorScreen/PlanetGenerator")
-
-[editable path="PlanetGeneratorScreen"]
 [editable path="DebugMenu"]

@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=3 uid="uid://dhw833d1r7xnu"]
+
+[sub_resource type="ZN_FastNoiseLite" id="ZN_FastNoiseLite_35rb6"]
+
+[sub_resource type="VoxelGeneratorGraph" id="VoxelGeneratorGraph_oye72"]
+graph_data = {
+"connections": [[10, 0, 9, 0], [2, 0, 9, 1], [7, 0, 10, 1], [9, 0, 6, 0], [12, 0, 10, 0]],
+"nodes": {
+"10": {
+"gui_position": Vector2(360, 80),
+"type": "Multiply"
+},
+"12": {
+"gui_position": Vector2(240, -40),
+"type": "Constant",
+"value": 10.0
+},
+"2": {
+"gui_position": Vector2(280, 200),
+"type": "InputY"
+},
+"6": {
+"gui_position": Vector2(680, 140),
+"type": "OutputType"
+},
+"7": {
+"auto_connect": true,
+"gui_position": Vector2(180, 60),
+"noise": SubResource("ZN_FastNoiseLite_35rb6"),
+"type": "FastNoise2D",
+"x": 0.0,
+"y": 0.0
+},
+"9": {
+"gui_position": Vector2(484, 193.6),
+"type": "Add"
+}
+},
+"version": 2
+}
+
+[sub_resource type="VoxelBlockyModelEmpty" id="VoxelBlockyModelEmpty_crtth"]
+
+[sub_resource type="VoxelBlockyModelCube" id="VoxelBlockyModelCube_bj3tv"]
+color = Color(0, 1, 0.121569, 1)
+
+[sub_resource type="VoxelBlockyLibrary" id="VoxelBlockyLibrary_oeoov"]
+models = Array[VoxelBlockyModel]([SubResource("VoxelBlockyModelEmpty_crtth"), SubResource("VoxelBlockyModelCube_bj3tv")])
+
+[sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_xv1om"]
+library = SubResource("VoxelBlockyLibrary_oeoov")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r0e32"]
+vertex_color_use_as_albedo = true
+
+[node name="VoxelWorld" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.408633, 0.912699, 0, -0.912699, 0.408633, 0, 40.2648, 0)
+
+[node name="VoxelTerrain" type="VoxelTerrain" parent="."]
+generator = SubResource("VoxelGeneratorGraph_oye72")
+mesher = SubResource("VoxelMesherBlocky_xv1om")
+material_override = SubResource("StandardMaterial3D_r0e32")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.928369, 0.37166, 0, -0.37166, 0.928369, 0, 31.0136, 0)
+current = true
+
+[node name="VoxelViewer" type="VoxelViewer" parent="Camera3D"]

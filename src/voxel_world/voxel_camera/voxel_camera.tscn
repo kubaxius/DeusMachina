@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://p4327likvwdd"]
+
+[node name="VoxelCamera" type="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.928369, 0.37166, 0, -0.37166, 0.928369, 0, 31.0136, 0)
+current = true
+
+[node name="VoxelViewer" type="VoxelViewer" parent="."]

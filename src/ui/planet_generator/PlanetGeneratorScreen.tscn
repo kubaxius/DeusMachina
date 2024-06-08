@@ -102,7 +102,7 @@ stretch = true
 
 [node name="PlanetPreview" parent="HSplitContainer/Preview/SubViewportContainer" instance=ExtResource("1_tmov3")]
 handle_input_locally = false
-size = Vector2i(1608, 980)
+size = Vector2i(100, 2)
 render_target_update_mode = 4
 planet_generator_path = NodePath("../../../../PlanetGenerator")
 
