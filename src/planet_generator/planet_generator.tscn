@@ -1,13 +1,13 @@
 [gd_scene load_steps=14 format=3 uid="uid://dkn3ovybcj06p"]
 
-[ext_resource type="Script" path="res://planet_generator/PlanetGenerator.gd" id="1_4wwxs"]
+[ext_resource type="Script" path="res://planet_generator/planet_generator.gd" id="1_4wwxs"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_c4qwx"]
-[ext_resource type="Script" path="res://planet_generator/components/GeologyGenerator.gd" id="2_qbil3"]
-[ext_resource type="Script" path="res://planet_generator/components/WeatherGenerator.gd" id="3_p13mx"]
+[ext_resource type="Script" path="res://planet_generator/components/geology_generator.gd" id="2_qbil3"]
+[ext_resource type="Script" path="res://planet_generator/components/weather_generator.gd" id="3_p13mx"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_ymj71"]
-[ext_resource type="Script" path="res://planet_generator/components/BiomeGenerator.gd" id="4_3c6js"]
+[ext_resource type="Script" path="res://planet_generator/components/biome_generator.gd" id="4_3c6js"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_rluyl"]
-[ext_resource type="Script" path="res://planet_generator/components/TextureBaker.gd" id="5_tkf1o"]
+[ext_resource type="Script" path="res://planet_generator/components/texture_baker.gd" id="5_tkf1o"]
 [ext_resource type="Shader" path="res://planet_generator/shaders/biome_painter.gdshader" id="6_e0540"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="11_67ihv"]
 

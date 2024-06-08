@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://bg0ptsxrqiu4g"]
 
 [ext_resource type="Shader" path="res://planet/shaders/planet_preview.gdshader" id="1_y2xd6"]
-[ext_resource type="Script" path="res://planet/preview/PreviewGlobe.gd" id="2_lufrg"]
+[ext_resource type="Script" path="res://planet/preview/preview_globe.gd" id="2_lufrg"]
 [ext_resource type="PackedScene" uid="uid://c36velgas3n3k" path="res://addons/zylann.atmosphere/planet_atmosphere.tscn" id="2_nhuo7"]
 [ext_resource type="Shader" path="res://planet/shaders/sea.gdshader" id="3_xiv5k"]
 [ext_resource type="Shader" path="res://addons/zylann.atmosphere/shaders/planet_atmosphere_v1_clouds.gdshader" id="5_jbf3k"]

@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://ciiafhg4xcxi"]
 
-[ext_resource type="Script" path="res://planet/preview/PlanetPreview.gd" id="1_s35qb"]
-[ext_resource type="PackedScene" uid="uid://bbmj0ebvbgbbd" path="res://planet/preview/PlanetCamera.tscn" id="2_rtfdo"]
-[ext_resource type="PackedScene" uid="uid://bg0ptsxrqiu4g" path="res://planet/preview/PreviewGlobe.tscn" id="3_ka7yk"]
+[ext_resource type="Script" path="res://planet/preview/planet_preview.gd" id="1_s35qb"]
+[ext_resource type="PackedScene" uid="uid://bbmj0ebvbgbbd" path="res://planet/preview/planet_camera.tscn" id="2_rtfdo"]
+[ext_resource type="PackedScene" uid="uid://bg0ptsxrqiu4g" path="res://planet/preview/preview_globe.tscn" id="3_ka7yk"]
 
 [sub_resource type="Environment" id="Environment_tpeo7"]
 

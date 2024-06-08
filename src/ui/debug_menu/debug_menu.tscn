@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cu5jcaqa8jpf3"]
 
-[ext_resource type="Script" path="res://ui/debug_menu/DebugMenu.gd" id="1_exl8q"]
+[ext_resource type="Script" path="res://ui/debug_menu/debug_menu.gd" id="1_exl8q"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="1_yidla"]
 
 [node name="DebugMenu" type="Control"]

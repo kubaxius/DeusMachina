@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dokyq5yuoktpb"]
 
-[ext_resource type="PackedScene" uid="uid://dhw833d1r7xnu" path="res://voxel_world/VoxelWorld.tscn" id="1_3x3f4"]
+[ext_resource type="PackedScene" uid="uid://dhw833d1r7xnu" path="res://voxel_world/voxel_world.tscn" id="1_3x3f4"]
 
 [node name="GameScreen" type="Control"]
 layout_mode = 3
