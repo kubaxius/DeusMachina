@@ -48,6 +48,8 @@ class_name Biome extends Resource
 @export_range(0, 1, 0.05) var winter_avg_sun_min: float = 0
 @export_range(0, 1, 0.05) var winter_avg_sun_max: float = 1
 
+var id: Color
+var used := false
 
 # TODO: make this more responsive in the editor using _get_property_list()
 

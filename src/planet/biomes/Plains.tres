@@ -4,7 +4,6 @@
 
 [resource]
 script = ExtResource("1_cgn00")
-main = false
 name = "Plains"
 base_weight = 1.0
 color = Color(0.0582479, 0.576088, 9.62615e-07, 1)

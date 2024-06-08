@@ -4,7 +4,6 @@
 
 [resource]
 script = ExtResource("1_y8utt")
-main = false
 name = "Desert"
 base_weight = 1.0
 color = Color(1, 1, 0.45098, 1)

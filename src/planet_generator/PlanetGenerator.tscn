@@ -4,11 +4,11 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_c4qwx"]
 [ext_resource type="Script" path="res://planet_generator/components/GeologyGenerator.gd" id="2_qbil3"]
 [ext_resource type="Script" path="res://planet_generator/components/WeatherGenerator.gd" id="3_p13mx"]
-[ext_resource type="Shader" path="res://planet_generator/shaders/landmass_generator.gdshader" id="3_s4o1t"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_ymj71"]
 [ext_resource type="Script" path="res://planet_generator/components/BiomeGenerator.gd" id="4_3c6js"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_rluyl"]
 [ext_resource type="Script" path="res://planet_generator/components/TextureBaker.gd" id="5_tkf1o"]
+[ext_resource type="Shader" path="res://planet_generator/shaders/biome_painter.gdshader" id="6_e0540"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="11_67ihv"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_6c2b3"]
@@ -17,18 +17,15 @@ height = 2.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hl4dt"]
 render_priority = 0
-shader = ExtResource("3_s4o1t")
+shader = ExtResource("6_e0540")
 shader_parameter/capture_size = 1.0
 shader_parameter/unwrap_location = Vector3(0, 0, 0)
 shader_parameter/unwrap_scale = 1.0
-shader_parameter/CONTINENTS_NUMBER = null
-shader_parameter/SHAPES_PER_CONTINENT = null
-shader_parameter/TRANSFORM_COMPONENTS = null
-shader_parameter/SHAPE_DATA = null
-shader_parameter/PLANET_POSITION = Vector3(0, 0, 0)
-shader_parameter/SEA_LEVEL = 0.2
+shader_parameter/SEA_ID = null
+shader_parameter/BIOME_CELL_NUMBER = null
+shader_parameter/BIOME_CELL_IDS = null
+shader_parameter/BIOME_CELL_POSITIONS = null
 shader_parameter/NOISE_SHIFT = Vector3(0, 0, 0)
-shader_parameter/MODE = 2
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_mykxs"]
 size = Vector2(10, 1)
@@ -53,6 +50,7 @@ unique_name_in_owner = true
 own_world_3d = true
 handle_input_locally = false
 debug_draw = 1
+use_hdr_2d = true
 size = Vector2i(2048, 1024)
 render_target_update_mode = 4
 script = ExtResource("5_tkf1o")
@@ -67,6 +65,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_hl4dt")
 
 [node name="Texture" type="TextureRect" parent="TextureBaker"]
 unique_name_in_owner = true
+visible = false
 visibility_layer = 524288
 anchors_preset = 15
 anchor_right = 1.0

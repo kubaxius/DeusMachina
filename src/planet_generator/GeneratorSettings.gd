@@ -13,6 +13,8 @@ class_name GeneratorSettings extends Resource
 		else:
 			return number_of_continents
 @export var shapes_per_continent: int = 5
+@export_range(0.1, 2.0, 0.1) var min_continent_size: float = 0.5
+@export_range(0.1, 2.0, 0.1) var max_continent_size: float = 1.0
 @export_range(0.1, 2.0, 0.1) var min_shape_size: float = 0.5
 @export_range(0.1, 2.0, 0.1) var max_shape_size: float = 1.0
 @export_range(0.1, 1.0, 0.1) var min_continent_spread: float = 0.1

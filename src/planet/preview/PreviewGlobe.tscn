@@ -1,0 +1,125 @@
+[gd_scene load_steps=15 format=3 uid="uid://bg0ptsxrqiu4g"]
+
+[ext_resource type="Shader" path="res://planet/shaders/planet_preview.gdshader" id="1_y2xd6"]
+[ext_resource type="Script" path="res://planet/preview/PreviewGlobe.gd" id="2_lufrg"]
+[ext_resource type="PackedScene" uid="uid://c36velgas3n3k" path="res://addons/zylann.atmosphere/planet_atmosphere.tscn" id="2_nhuo7"]
+[ext_resource type="Shader" path="res://planet/shaders/sea.gdshader" id="3_xiv5k"]
+[ext_resource type="Shader" path="res://addons/zylann.atmosphere/shaders/planet_atmosphere_v1_clouds.gdshader" id="5_jbf3k"]
+[ext_resource type="Shader" path="res://planet_generator/shaders/raymarch.gdshader" id="8_cenhy"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_4p7p7"]
+radius = 10.0
+height = 20.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mmrei"]
+render_priority = 0
+shader = ExtResource("1_y2xd6")
+shader_parameter/TERRAIN_AMPLITUDE = 0.05
+shader_parameter/SEA_LEVEL = 0.2
+shader_parameter/DEF_COLOR = Color(0.00392157, 0.188235, 0.0235294, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hdpah"]
+radius = 10.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_fom5q"]
+radius = 10.0
+height = 20.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e85cm"]
+render_priority = 0
+shader = ExtResource("3_xiv5k")
+shader_parameter/WAVE_STRENGTH = 1.0
+shader_parameter/ANG_STEP = 0.01
+shader_parameter/NOISE_AMP = 10.0
+shader_parameter/WATER_COLOR = Color(0, 0.0366666, 0.22, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sflsa"]
+render_priority = 0
+shader = ExtResource("8_cenhy")
+shader_parameter/CONTINENTS_NUMBER = null
+shader_parameter/SHAPES_PER_CONTINENT = null
+shader_parameter/TRANSFORM_COMPONENTS = null
+shader_parameter/SHAPE_TYPES = null
+shader_parameter/SHAPE_SCALES = null
+shader_parameter/MAX_STEPS = 1000
+shader_parameter/MAX_DIST = 100.0
+shader_parameter/SURF_DIST = -0.1
+shader_parameter/SCALE = 10.0
+shader_parameter/alpha = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_y4bcr"]
+material = SubResource("ShaderMaterial_sflsa")
+flip_faces = true
+size = Vector3(4, 4, 4)
+
+[sub_resource type="GDScript" id="GDScript_odgtr"]
+script/source = "extends MeshInstance3D
+
+
+func _set_shapes():
+	var material = get_active_material(0)
+	var planet_generator = get_parent().get_parent().planet_generator
+	var geology_generaotr = planet_generator.get_node(\"GeologyGenerator\")
+	geology_generaotr.send_data_to_multi_shape_lib(material)
+
+func show_shapes():
+	_set_shapes()
+	show()
+
+func hide_shapes():
+	hide()
+
+
+func _unhandled_input(event):
+	if event.is_action_released(\"open_debug_menu\"):
+		if visible:
+			hide_shapes()
+		else:
+			show_shapes()
+"
+
+[node name="PreviewGlobe" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_4p7p7")
+surface_material_override/0 = SubResource("ShaderMaterial_mmrei")
+script = ExtResource("2_lufrg")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("SphereShape3D_hdpah")
+
+[node name="Water" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_fom5q")
+surface_material_override/0 = SubResource("ShaderMaterial_e85cm")
+
+[node name="ShapeVisualizer" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+visible = false
+mesh = SubResource("BoxMesh_y4bcr")
+skeleton = NodePath("../..")
+script = SubResource("GDScript_odgtr")
+metadata/_edit_lock_ = true
+
+[node name="PlanetAthmosphere" parent="." instance=ExtResource("2_nhuo7")]
+planet_radius = 10.0
+atmosphere_height = 0.255
+custom_shader = ExtResource("5_jbf3k")
+force_fullscreen = true
+shader_params/u_density = 0.305
+shader_params/u_day_color0 = Color(0.5, 0.8, 1, 1)
+shader_params/u_day_color1 = Color(0.5, 0.8, 1, 1)
+shader_params/u_night_color0 = Color(0.2, 0.4, 0.8, 1)
+shader_params/u_night_color1 = Color(0.2, 0.4, 0.8, 1)
+shader_params/u_day_night_transition_scale = 2.0
+shader_params/u_cloud_shape_invert = 0.0
+shader_params/u_cloud_coverage_bias = 0.0
+shader_params/u_cloud_shape_factor = 0.8
+shader_params/u_cloud_shape_scale = 1.0
+shader_params/u_cloud_density_scale = 50.0
+shader_params/u_cloud_bottom = 0.2
+shader_params/u_cloud_top = 0.5
+shader_params/u_cloud_blend = 0.5
+shader_params/u_sphere_depth_factor = 1.0
+shader_params/u_cloud_shape_texture = null
+shader_params/u_cloud_coverage_cubemap = null

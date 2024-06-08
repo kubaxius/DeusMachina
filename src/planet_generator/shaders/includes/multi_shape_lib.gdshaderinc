@@ -1,3 +1,6 @@
+
+#include "res://addons/shaderV/rgba/noise/simplex3d.gdshaderinc"
+
 #include "res://addons/sdf_visual_shader_nodes/3D/capped_cone.gdshaderinc"
 #include "res://addons/sdf_visual_shader_nodes/3D/capped_torus.gdshaderinc"
 
@@ -6,7 +9,8 @@ uniform int CONTINENTS_NUMBER;
 uniform int SHAPES_PER_CONTINENT;
 
 uniform vec3 TRANSFORM_COMPONENTS[1200];
-uniform vec2 SHAPE_DATA[300];
+uniform int SHAPE_TYPES[300];
+uniform vec4 SHAPE_SCALES[300];
 
 
 mat4 get_shape_transform(int shape_id){
@@ -21,12 +25,12 @@ mat4 get_shape_transform(int shape_id){
 
 
 int get_shape_type(int shape_id){
-	return int(SHAPE_DATA[shape_id].x);
+	return int(SHAPE_TYPES[shape_id]);
 }
 
 
 float get_shape_scale(int shape_id){
-	return SHAPE_DATA[shape_id].y;
+	return SHAPE_SCALES[shape_id].x;
 }
 
 
@@ -53,4 +57,20 @@ float get_distance_to_shapes(vec3 ws_pixel_pos){
 	}
 	
 	return dist;
+}
+
+
+float get_height(vec3 pos, vec3 noise_shift){
+	pos.z = -pos.z;
+	vec3 noise_pos = pos + noise_shift;
+	float height = -get_distance_to_shapes(pos);
+	height -= 0.3 * _simplex3dNoiseFunc(noise_pos * 7.0) - 0.15;
+	height -= 0.1 * _simplex3dNoiseFunc(noise_pos * 20.0) - 0.05;
+	return clamp((height + 1.0)/2.0, 0.0, 1.0);
+}
+
+
+float get_sea_value(vec3 pos, vec3 noise_shift, float sea_level){
+	float water = 1.0 - step(sea_level, get_height(pos, noise_shift));
+	return water;
 }

@@ -1,10 +1,12 @@
 shader_type spatial;
+render_mode depth_test_disabled;
 #include "res://planet_generator/shaders/includes/unwrap.gdshaderinc"
 #include "res://addons/shaderV/rgba/noise/simplex3d.gdshaderinc"
 
 uniform sampler2D SEA_MAP;
+uniform vec3 SEA_ID;
 uniform int BIOME_CELL_NUMBER;
-uniform vec3 BIOME_CELL_COLORS[2000];
+uniform vec3 BIOME_CELL_IDS[2000];
 uniform vec3 BIOME_CELL_POSITIONS[2000];
 uniform vec3 NOISE_SHIFT = vec3(0.0);
 
@@ -33,14 +35,13 @@ vec3 get_biome_color(vec3 pos){
 			chosen_id = i;
 		}
 	}
-	return BIOME_CELL_COLORS[chosen_id];
+	return BIOME_CELL_IDS[chosen_id];
 }
 
 void fragment() {
 	if(texture(SEA_MAP, vec2(1.) - UV).x > 0.9){
-		ALBEDO = vec3(0.0, 0.0, 1.0);
+		ALBEDO = SEA_ID;
 	} else {
 		ALBEDO = get_biome_color(WS_PIXEL_POS);
 	}
-	//ALBEDO = get_biome_color(WS_PIXEL_POS);
 }

@@ -1,21 +1,22 @@
 shader_type spatial;
-render_mode depth_test_disabled;
+render_mode depth_test_disabled, unshaded;
 
 #include "res://planet_generator/shaders/includes/multi_shape_lib.gdshaderinc"
 
 uniform int MAX_STEPS = 1000;
 uniform float MAX_DIST = 100.0;
-uniform float SURF_DIST = 0.1;
+uniform float SURF_DIST = 0.01;
+uniform float SCALE = 10.;
 
-uniform float alpha = 0.9;
+uniform float alpha = 0.5;
 
 
 float GetDistance(vec3 p, mat4 transform){
 	//vec3 np = vec3(p.x, -p.y, p.z);
-	transform[0] = - transform[0];
-	transform[1] = - transform[1];
-	transform[2] = - transform[2];
-	vec3 np = (transform * vec4(p, 1.0)).xyz;
+	//transform[0] = - transform[0];
+	//transform[1] = - transform[1];
+	//transform[2] = - transform[2];
+	//vec3 np = (transform * vec4(p, 1.0)).xyz;
 	return get_distance_to_shapes(p);
 }
 
@@ -33,7 +34,7 @@ float RayMarch(vec3 ray_origin, vec3 ray_direction, mat4 transform) {
 	float dist = 0.0;
 	
 	for(int i = 0; i < MAX_STEPS; i++){
-		vec3 pos = ray_origin + (ray_direction * dist);
+		vec3 pos = (ray_origin + (ray_direction * dist))/SCALE;
 		
 		// Don't show parts of shapes inside planet
 		if(length(pos) < 1.0){return 1000.0;}
@@ -45,11 +46,6 @@ float RayMarch(vec3 ray_origin, vec3 ray_direction, mat4 transform) {
 	return dist;
 }
 
-varying vec3 WS_PIXEL_POS;
-void vertex() {
-	WS_PIXEL_POS = normalize(VERTEX);
-}
-
 
 void fragment() {
 	mat4 trans = inverse(MODEL_MATRIX);
@@ -59,7 +55,7 @@ void fragment() {
 	
 	float dist_traveled = RayMarch(ray_origin, ray_direction, trans);
 	
-	ALBEDO = vec3(1., 0., 0.);
+	ALBEDO = vec3(1., 0., 1.);
 	if(dist_traveled < MAX_DIST){
 		ALPHA = alpha;
 	}else{

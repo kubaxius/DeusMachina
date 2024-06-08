@@ -30,8 +30,8 @@ static func get_randomly_rotated_transform(rng: RandomNumberGenerator) -> Transf
 	return trans
 
 
-static func break_transform_into_vectors(trans: Transform3D) -> Array:
-	var ret = []
+static func break_transform_into_vectors(trans: Transform3D) -> Array[Vector3]:
+	var ret: Array[Vector3] = []
 	ret.append(trans.basis.x)
 	ret.append(trans.basis.y)
 	ret.append(trans.basis.z)
@@ -88,3 +88,7 @@ static func weighted_choice(array: Array, weights: Array, rng: RandomNumberGener
 		if summer >= rnd:
 			return array[i]
 		i += 1
+
+
+static func color_to_vec3(color: Color) -> Vector3:
+	return Vector3(color.r, color.g, color.b)

@@ -4,8 +4,7 @@
 
 [resource]
 script = ExtResource("1_m61o2")
-main = false
-name = "Desert"
+name = "Sea"
 base_weight = 0.0
 color = Color(0.2666, 0.35561, 0.86, 1)
 biome_size_min = 1

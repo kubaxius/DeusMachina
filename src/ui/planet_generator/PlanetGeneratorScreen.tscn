@@ -1,16 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://6ptuao7cvc1c"]
+[gd_scene load_steps=11 format=3 uid="uid://6ptuao7cvc1c"]
 
 [ext_resource type="Script" path="res://ui/planet_generator/PlanetGeneratorScreen.gd" id="1_pb4oc"]
-[ext_resource type="PackedScene" uid="uid://ciiafhg4xcxi" path="res://planet/PlanetPreview.tscn" id="1_tmov3"]
+[ext_resource type="PackedScene" uid="uid://ciiafhg4xcxi" path="res://planet/preview/PlanetPreview.tscn" id="1_tmov3"]
 [ext_resource type="PackedScene" uid="uid://dkn3ovybcj06p" path="res://planet_generator/PlanetGenerator.tscn" id="2_gyftb"]
 [ext_resource type="Script" path="res://planet_generator/GeneratorSettings.gd" id="3_mi076"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_5roqy"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="6_8varm"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_x3pak"]
 
 [sub_resource type="Resource" id="Resource_opb7j"]
 script = ExtResource("3_mi076")
-rng_seed = 2139
-polar_capes = false
-number_of_continents = 1
-shapes_per_continent = 5
+rng_seed = 2140
+polar_capes = true
+number_of_continents = 2
+shapes_per_continent = 3
+min_continent_size = 0.5
+max_continent_size = 1.0
 min_shape_size = 0.4
 max_shape_size = 1.2
 min_continent_spread = 0.1
@@ -100,6 +105,19 @@ handle_input_locally = false
 size = Vector2i(1608, 980)
 render_target_update_mode = 4
 planet_generator_path = NodePath("../../../../PlanetGenerator")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("5_5roqy")
+
+[node name="StateMachine" type="Node" parent="StateChart"]
+script = ExtResource("6_8varm")
+initial_state = NodePath("Generate")
+
+[node name="Generate" type="Node" parent="StateChart/StateMachine"]
+script = ExtResource("7_x3pak")
+
+[node name="ChooseLanding" type="Node" parent="StateChart/StateMachine"]
+script = ExtResource("7_x3pak")
 
 [connection signal="finished_generation" from="PlanetGenerator" to="HSplitContainer/LeftPanel/Preview2D" method="_on_planet_generator_finished_generation"]
 [connection signal="finished_generation" from="PlanetGenerator" to="HSplitContainer/Preview/SubViewportContainer/PlanetPreview" method="_on_planet_generator_finished_generation"]

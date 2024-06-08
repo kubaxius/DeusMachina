@@ -1,6 +1,6 @@
 class_name Generator extends Node
 
-@onready var parent: PlanetGenerator = get_parent()
+@onready var main_generator: PlanetGenerator = get_parent()
 
 @onready var planet: Planet = get_parent().planet
 @onready var settings: GeneratorSettings = get_parent().settings

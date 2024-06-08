@@ -35,14 +35,14 @@ static func vector3_to_uv(pos: Vector3, mult := Vector3(-1, -1, 1)):
 	return Vector2(u, v)
 
 
-static func array_vector3_to_stereo(arr: Array) -> Array:
+static func array_vector3_to_stereo(arr: Array[Vector3]) -> Array[Vector2]:
 	var return_array = []
 	for point in arr:
 		return_array.append(vector3_to_stereo(point))
 	return return_array
 
 
-static func array_stereo_to_vector3(arr: Array, radius := 1) -> Array:
+static func array_stereo_to_vector3(arr: Array[Vector2], radius := 1) -> Array[Vector3]:
 	var return_array = []
 	for point in arr:
 		return_array.append(stereo_to_vector3(point, radius))

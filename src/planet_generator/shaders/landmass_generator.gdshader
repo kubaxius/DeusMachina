@@ -1,6 +1,5 @@
 shader_type spatial;
 
-#include "res://addons/shaderV/rgba/noise/simplex3d.gdshaderinc"
 #include "res://planet_generator/shaders/includes/unwrap.gdshaderinc"
 #include "res://planet_generator/shaders/includes/multi_shape_lib.gdshaderinc"
 
@@ -13,22 +12,6 @@ uniform int MODE = 0;
 instance uniform bool UNWRAP = true;
 
 varying vec3 WS_PIXEL_POS;
-
-
-float get_height(vec3 pos){
-	pos.z = -pos.z;
-	vec3 noise_pos = pos + NOISE_SHIFT;
-	float height = -get_distance_to_shapes(pos);
-	height -= 0.3 * _simplex3dNoiseFunc(noise_pos * 7.0) - 0.15;
-	height -= 0.1 * _simplex3dNoiseFunc(noise_pos * 20.0) - 0.05;
-	return clamp((height + 1.0)/2.0, 0.0, 1.0);
-}
-
-
-float get_sea_value(vec3 pos){
-	float water = 1.0 - step(SEA_LEVEL, get_height(pos));
-	return water;
-}
 
 
 // ONLY FOR TESTING
@@ -72,13 +55,13 @@ void fragment() {
 	
 	switch(MODE){
 		case 0:
-			ALBEDO = get_color(get_height(WS_PIXEL_POS));
+			ALBEDO = get_color(get_height(WS_PIXEL_POS, NOISE_SHIFT));
 			break;
 		case 1:
-			ALBEDO = vec3(get_sea_value(WS_PIXEL_POS));
+			ALBEDO = vec3(get_sea_value(WS_PIXEL_POS, NOISE_SHIFT, SEA_LEVEL));
 			break;
 		case 2:
-			ALBEDO = vec3(get_height(WS_PIXEL_POS));
+			ALBEDO = vec3(get_height(WS_PIXEL_POS, NOISE_SHIFT));
 			break;
 	}
 	

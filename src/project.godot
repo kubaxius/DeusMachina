@@ -29,7 +29,7 @@ window/stretch/mode="viewport"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/bottom_panel_shortcuts/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/icosphere/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg")
+enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/bottom_panel_shortcuts/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/icosphere/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg", "res://addons/zylann.atmosphere/tools/plugin.cfg")
 
 [file_customization]
 
@@ -117,4 +117,5 @@ zoom_out={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+environment/subsurface_scattering/subsurface_scattering_quality=3
 environment/defaults/default_clear_color=Color(3.60981e-08, 0.0479789, 0.0979424, 1)

@@ -1,0 +1,4 @@
+The problem you are trying to solve is called real time color quantization, and there are a number of cool ways to optimize it. If you represent RGB as 3D space, you could store your pallet in an octree which would drastically reduce search times
+
+Instead of calculating the euclidean distance for each vector, you could take the dot product. The largest dot product will signify the most similar vector. For vectors x and y, rather than calculating dist(x, y) = sqrt( (r_x - r_y)^2 + (g_x - g_y)^2 + (b_x - b_y)^2 ) for the euclidean distance (or even calculating the squared distance to avoid computing square roots every check), you can save computation time by instead calculating dot(x, y) = ( r_x*r_y + g_x*g_y + b_x*b_y ) this has the same number of additions and multiplications, but saves on 3 subtractions and potentially a square root per calculation.
+Though, this is probably a micro-optimization and you won't see too much benefit. Love chum btw, never change it.

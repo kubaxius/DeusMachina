@@ -1,11 +1,24 @@
 ## Planet/Point ##
-class_name PlanetPoint extends Node3D
+class_name PlanetPoint extends Resource
 
-var planet: Planet
+@export var planet: Planet
+@export var position_3d: Vector3
+
+var position_stereo: Vector2:
+	get:
+		return GlobeTools.vector3_to_stereo(position_3d)
+	set(pos):
+		position_3d = GlobeTools.stereo_to_vector3(pos)
+
+var position_uv: Vector2:
+	get:
+		return GlobeTools.vector3_to_uv(position_3d)
+
 
 var height: float
 var shore_val: float
 var is_sea := false
+var biome: Biome
 
 var up_tilt = TiltValues.new(self)
 
@@ -13,24 +26,9 @@ var down_tilt = TiltValues.new(self)
 
 var no_tilt = TiltValues.new(self)
 
-var position_3d: Vector3:
-	get:
-		return position
-	set(pos):
-		position = pos
-
-var position_stereo: Vector2:
-	get:
-		return GlobeTools.vector3_to_stereo(position)
-	set(pos):
-		position = GlobeTools.stereo_to_vector3(pos)
-
-var position_uv: Vector2:
-	get:
-		return GlobeTools.vector3_to_uv(position_3d)
 
 func _init(p_pos:Vector3, p_planet: Planet):
-	position = p_pos.normalized()
+	position_3d = p_pos.normalized()
 	planet = p_planet
 
 
@@ -41,5 +39,6 @@ func _to_string():
 	string += "Pos UV:  " + str(position_uv) + "\n"
 	string += "Height:  " + str(height) + "\n"
 	string += "Is sea:  " + str(is_sea) + "\n"
+	string += "Biome:  " + biome.name + "\n"
 	
 	return string
