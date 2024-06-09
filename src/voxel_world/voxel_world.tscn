@@ -1,4 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dhw833d1r7xnu"]
+[gd_scene load_steps=10 format=3 uid="uid://dhw833d1r7xnu"]
+
+[ext_resource type="PackedScene" uid="uid://p4327likvwdd" path="res://voxel_world/voxel_camera/voxel_camera.tscn" id="1_xa7o1"]
+
+[sub_resource type="Environment" id="Environment_j7p6k"]
+background_mode = 1
+background_color = Color(0.756863, 0.941176, 0.901961, 1)
 
 [sub_resource type="ZN_FastNoiseLite" id="ZN_FastNoiseLite_35rb6"]
 
@@ -55,16 +61,17 @@ vertex_color_use_as_albedo = true
 
 [node name="VoxelWorld" type="Node3D"]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_j7p6k")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 0.408633, 0.912699, 0, -0.912699, 0.408633, 0, 40.2648, 0)
 
 [node name="VoxelTerrain" type="VoxelTerrain" parent="."]
 generator = SubResource("VoxelGeneratorGraph_oye72")
 mesher = SubResource("VoxelMesherBlocky_xv1om")
+collision_layer = 513
 material_override = SubResource("StandardMaterial3D_r0e32")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.928369, 0.37166, 0, -0.37166, 0.928369, 0, 31.0136, 0)
-current = true
-
-[node name="VoxelViewer" type="VoxelViewer" parent="Camera3D"]
+[node name="VoxelCamera" parent="." instance=ExtResource("1_xa7o1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.15954, 0)
