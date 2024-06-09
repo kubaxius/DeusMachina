@@ -1,15 +1,15 @@
 [gd_scene load_steps=11 format=3 uid="uid://6ptuao7cvc1c"]
 
-[ext_resource type="Script" path="res://ui/planet_generator/planet_generator_screen.gd" id="1_pb4oc"]
-[ext_resource type="PackedScene" uid="uid://ciiafhg4xcxi" path="res://planet/preview/planet_preview.tscn" id="1_tmov3"]
-[ext_resource type="PackedScene" uid="uid://dkn3ovybcj06p" path="res://planet_generator/planet_generator.tscn" id="2_gyftb"]
-[ext_resource type="Script" path="res://planet_generator/generator_settings.gd" id="3_mi076"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_5roqy"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="6_8varm"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_x3pak"]
+[ext_resource type="Script" path="res://ui/planet_generator/planet_generator_screen.gd" id="1_vpigv"]
+[ext_resource type="PackedScene" uid="uid://dkn3ovybcj06p" path="res://planet_generator/planet_generator.tscn" id="2_pxme3"]
+[ext_resource type="Script" path="res://planet_generator/generator_settings.gd" id="3_h8lqe"]
+[ext_resource type="PackedScene" uid="uid://ciiafhg4xcxi" path="res://planet/preview/planet_preview.tscn" id="4_dbbx4"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_26gni"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="6_el6qg"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_scqij"]
 
 [sub_resource type="Resource" id="Resource_opb7j"]
-script = ExtResource("3_mi076")
+script = ExtResource("3_h8lqe")
 rng_seed = 2140
 polar_capes = true
 number_of_continents = 2
@@ -59,9 +59,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_pb4oc")
+script = ExtResource("1_vpigv")
 
-[node name="PlanetGenerator" parent="." instance=ExtResource("2_gyftb")]
+[node name="PlanetGenerator" parent="." instance=ExtResource("2_pxme3")]
 unique_name_in_owner = true
 settings = SubResource("Resource_opb7j")
 
@@ -100,24 +100,24 @@ grow_horizontal = 2
 grow_vertical = 2
 stretch = true
 
-[node name="PlanetPreview" parent="HSplitContainer/Preview/SubViewportContainer" instance=ExtResource("1_tmov3")]
+[node name="PlanetPreview" parent="HSplitContainer/Preview/SubViewportContainer" instance=ExtResource("4_dbbx4")]
 handle_input_locally = false
 size = Vector2i(1608, 980)
 render_target_update_mode = 4
 planet_generator_path = NodePath("../../../../PlanetGenerator")
 
 [node name="StateChart" type="Node" parent="."]
-script = ExtResource("5_5roqy")
+script = ExtResource("5_26gni")
 
 [node name="StateMachine" type="Node" parent="StateChart"]
-script = ExtResource("6_8varm")
+script = ExtResource("6_el6qg")
 initial_state = NodePath("Generate")
 
 [node name="Generate" type="Node" parent="StateChart/StateMachine"]
-script = ExtResource("7_x3pak")
+script = ExtResource("7_scqij")
 
 [node name="ChooseLanding" type="Node" parent="StateChart/StateMachine"]
-script = ExtResource("7_x3pak")
+script = ExtResource("7_scqij")
 
 [connection signal="finished_generation" from="PlanetGenerator" to="HSplitContainer/LeftPanel/Preview2D" method="_on_planet_generator_finished_generation"]
 [connection signal="finished_generation" from="PlanetGenerator" to="HSplitContainer/Preview/SubViewportContainer/PlanetPreview" method="_on_planet_generator_finished_generation"]
