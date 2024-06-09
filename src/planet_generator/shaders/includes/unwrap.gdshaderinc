@@ -1,3 +1,4 @@
+// source: https://godotshaders.com/shader/uv-unwrap-and-normals-unwrapping-world-aligned/
 uniform float capture_size = 1.0;
 uniform vec3 unwrap_location = vec3(0, 0, 0);
 uniform float unwrap_scale = 1.0;
