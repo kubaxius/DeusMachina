@@ -1,11 +1,11 @@
 [gd_scene load_steps=15 format=3 uid="uid://bg0ptsxrqiu4g"]
 
-[ext_resource type="Shader" path="res://planet/shaders/planet_preview.gdshader" id="1_y2xd6"]
-[ext_resource type="Script" path="res://planet/preview/preview_globe.gd" id="2_lufrg"]
-[ext_resource type="PackedScene" uid="uid://c36velgas3n3k" path="res://addons/zylann.atmosphere/planet_atmosphere.tscn" id="2_nhuo7"]
-[ext_resource type="Shader" path="res://planet/shaders/sea.gdshader" id="3_xiv5k"]
-[ext_resource type="Shader" path="res://addons/zylann.atmosphere/shaders/planet_atmosphere_v1_clouds.gdshader" id="5_jbf3k"]
-[ext_resource type="Shader" path="res://planet_generator/shaders/raymarch.gdshader" id="8_cenhy"]
+[ext_resource type="Shader" path="res://planet/shaders/planet_preview.gdshader" id="1_7rnya"]
+[ext_resource type="Script" path="res://planet/preview/preview_globe.gd" id="2_63slx"]
+[ext_resource type="Shader" path="res://planet/shaders/sea.gdshader" id="3_7hkn5"]
+[ext_resource type="Shader" path="res://planet_generator/shaders/raymarch.gdshader" id="4_u5muy"]
+[ext_resource type="PackedScene" uid="uid://c36velgas3n3k" path="res://addons/zylann.atmosphere/planet_atmosphere.tscn" id="5_20adi"]
+[ext_resource type="Shader" path="res://addons/zylann.atmosphere/shaders/planet_atmosphere_v1_clouds.gdshader" id="6_jj8g7"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_4p7p7"]
 radius = 10.0
@@ -13,7 +13,7 @@ height = 20.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mmrei"]
 render_priority = 0
-shader = ExtResource("1_y2xd6")
+shader = ExtResource("1_7rnya")
 shader_parameter/TERRAIN_AMPLITUDE = 0.05
 shader_parameter/SEA_LEVEL = 0.2
 shader_parameter/DEF_COLOR = Color(0.00392157, 0.188235, 0.0235294, 1)
@@ -27,7 +27,7 @@ height = 20.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e85cm"]
 render_priority = 0
-shader = ExtResource("3_xiv5k")
+shader = ExtResource("3_7hkn5")
 shader_parameter/WAVE_STRENGTH = 1.0
 shader_parameter/ANG_STEP = 0.01
 shader_parameter/NOISE_AMP = 10.0
@@ -35,7 +35,7 @@ shader_parameter/WATER_COLOR = Color(0, 0.0366666, 0.22, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sflsa"]
 render_priority = 0
-shader = ExtResource("8_cenhy")
+shader = ExtResource("4_u5muy")
 shader_parameter/CONTINENTS_NUMBER = null
 shader_parameter/SHAPES_PER_CONTINENT = null
 shader_parameter/TRANSFORM_COMPONENTS = null
@@ -81,7 +81,7 @@ func _unhandled_input(event):
 [node name="PreviewGlobe" type="MeshInstance3D"]
 mesh = SubResource("SphereMesh_4p7p7")
 surface_material_override/0 = SubResource("ShaderMaterial_mmrei")
-script = ExtResource("2_lufrg")
+script = ExtResource("2_63slx")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -101,10 +101,10 @@ skeleton = NodePath("../..")
 script = SubResource("GDScript_odgtr")
 metadata/_edit_lock_ = true
 
-[node name="PlanetAthmosphere" parent="." instance=ExtResource("2_nhuo7")]
+[node name="PlanetAthmosphere" parent="." instance=ExtResource("5_20adi")]
 planet_radius = 10.0
 atmosphere_height = 0.255
-custom_shader = ExtResource("5_jbf3k")
+custom_shader = ExtResource("6_jj8g7")
 force_fullscreen = true
 shader_params/u_density = 0.305
 shader_params/u_day_color0 = Color(0.5, 0.8, 1, 1)
