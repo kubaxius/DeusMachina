@@ -27,6 +27,10 @@ window/size/initial_position_type=0
 window/size/initial_position=Vector2i(1920, 0)
 window/stretch/mode="viewport"
 
+[dotnet]
+
+project/assembly_name="Deus Machina"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg", "res://addons/bottom_panel_shortcuts/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/icosphere/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg", "res://addons/zylann.atmosphere/tools/plugin.cfg")
