@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "D:/GodotVersions/src/godot-4.2.2/bin/godot.windows.editor.double.x86_64.mono.exe",
+            "program": "D:/GodotVersions/src/godot-4.2.2-stable/bin/godot.windows.editor.double.x86_64.mono.exe",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopAtEntry": false,
