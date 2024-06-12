@@ -23,6 +23,7 @@ public partial class VoxelCamera : Node3D
 	private float currentZoomExponent = 0f;
 	private Vector3 movementVector = Vector3.Zero;
 
+	#region Overrides
 	public override void _Ready()
 	{
 		hGimbal = GetNode<Node3D>("HGimbal");
@@ -47,6 +48,8 @@ public partial class VoxelCamera : Node3D
 		newPosition.Y = Mathf.Lerp(newPosition.Y, desiredHeight, 0.1);
 		Position = newPosition;
 	}
+
+	#endregion Overrides
 
 	public void HandleRotationInput(InputEvent @event)
 	{
