@@ -17,6 +17,7 @@ script = ExtResource("2_f80v0")
 metadata/_edit_lock_ = true
 
 [node name="VoxelViewer" type="VoxelViewer" parent="."]
+view_distance = 512
 
 [node name="HGimbal" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
