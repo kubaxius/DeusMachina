@@ -1,12 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://6wjn33dh1mx6"]
+[gd_scene load_steps=3 format=3 uid="uid://cml5ivet0uvid"]
 
-[ext_resource type="PackedScene" uid="uid://dokyq5yuoktpb" path="res://ui/game/game_screen.tscn" id="1_1vdtu"]
+[ext_resource type="PackedScene" uid="uid://dokyq5yuoktpb" path="res://scenes/voxel_world_scene.tscn" id="1_rrovr"]
 [ext_resource type="PackedScene" uid="uid://cu5jcaqa8jpf3" path="res://ui/debug_menu/debug_menu.tscn" id="2_7q33x"]
 
 [node name="Main" type="Node"]
 
-[node name="GameScreen" parent="." instance=ExtResource("1_1vdtu")]
+[node name="MainScene" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VoxelWorldScene" parent="MainScene" instance=ExtResource("1_rrovr")]
+layout_mode = 1
 
 [node name="DebugMenu" parent="." instance=ExtResource("2_7q33x")]
-
-[editable path="DebugMenu"]
+mouse_filter = 2
