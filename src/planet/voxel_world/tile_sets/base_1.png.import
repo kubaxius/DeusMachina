@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dkvih40ox8003"
-path.s3tc="res://.godot/imported/base_1.png-7594c8d8e0481538e88e772e70991f6b.s3tc.ctex"
+path.s3tc="res://.godot/imported/base_1.png-4a1451b7ad6ba10bafabe3c1b2dbfcb9.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://voxel_world/tile_sets/base_1.png"
-dest_files=["res://.godot/imported/base_1.png-7594c8d8e0481538e88e772e70991f6b.s3tc.ctex"]
+source_file="res://planet/voxel_world/tile_sets/base_1.png"
+dest_files=["res://.godot/imported/base_1.png-4a1451b7ad6ba10bafabe3c1b2dbfcb9.s3tc.ctex"]
 
 [params]
 

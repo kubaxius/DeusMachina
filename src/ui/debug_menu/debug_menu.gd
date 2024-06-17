@@ -6,6 +6,6 @@ func _ready():
 
 
 func _unhandled_input(event):
-	if event.is_action_released("open_debug_menu"):
+	if event.is_action_pressed("open_debug_menu"):
 		print("Debug Menu")
 		visible = !visible
