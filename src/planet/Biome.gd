@@ -48,6 +48,10 @@ class_name Biome extends Resource
 @export_range(0, 1, 0.05) var winter_avg_sun_min: float = 0
 @export_range(0, 1, 0.05) var winter_avg_sun_max: float = 1
 
+
+@export_group("Voxel Generator")
+@export var block_map: Array[String] = []
+
 var id: Color
 var used := false
 

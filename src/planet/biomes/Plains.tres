@@ -24,3 +24,4 @@ winter_humidity_min = 0.0
 winter_humidity_max = 1.0
 winter_avg_sun_min = 0.0
 winter_avg_sun_max = 1.0
+block_map = Array[String](["air", "grass", "dirt", "stone"])
